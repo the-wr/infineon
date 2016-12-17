@@ -1,0 +1,72 @@
+﻿<Window x:Class="Infineon.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Infineon"
+        xmlns:controls="clr-namespace:Infineon.Controls"
+        mc:Ignorable="d"
+        Title="E4BIKE CPT 0.1" Height="700" Width="1000" WindowStartupLocation="CenterScreen">
+    <DockPanel SnapsToDevicePixels="True">
+        <DockPanel DockPanel.Dock="Top" Margin="10,10">
+            <Image DockPanel.Dock="Left" Height="30" Source="Resources/logo.png"/>
+
+            <StackPanel Name="spControllerType" Orientation="Horizontal" DockPanel.Dock="Right">
+                <ToggleButton Width="60" Tag="KLH606">KLH606</ToggleButton>
+                <ToggleButton Width="60" Tag="KLH609">KLH609</ToggleButton>
+                <ToggleButton Width="60" Tag="KLH612">KLH612</ToggleButton>
+                <ToggleButton Width="60" Tag="KLH615">KLH615</ToggleButton>
+                <ToggleButton Width="60" Tag="KLH618">KLH618</ToggleButton>
+            </StackPanel>
+
+            <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10,0">Controller:</TextBlock>
+            <TextBlock VerticalAlignment="Center" FontSize="18" Margin="10,0">Controller Programming Tool</TextBlock>
+        </DockPanel>
+        
+        <DockPanel DockPanel.Dock="Top" Margin="10,0">
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                <Button>Default</Button>
+                <Rectangle Width="1" Height="10" Stroke="Black" Margin="5,0"></Rectangle>
+                <StackPanel Name="spPresets" Orientation="Horizontal">
+                    <Button>123</Button>
+                    <Button>123</Button>
+                    <Button>123</Button>
+                </StackPanel>
+                <Rectangle Width="1" Height="10" Stroke="Black" Margin="5,0"></Rectangle>
+                <Button Width="60">Save</Button>
+                <Button Width="60">Save As</Button>
+            </StackPanel>
+            <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="0,0,10,0">Preset:</TextBlock>
+            <TextBlock></TextBlock>
+        </DockPanel>
+
+        <DockPanel Dock="Bottom" Margin="10,10">
+            <Button Width="160" DockPanel.Dock="Right">Upload parameters</Button>
+            <ComboBox Name="cbPort" Width="100" DockPanel.Dock="Right" IsEditable="True" Height="22" Margin="10,0"></ComboBox>
+            <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right">Port:</TextBlock>
+            <Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Image Source="Resources/icon-ok.png" Width="32" Height="32" Margin="0,-1,10,-1"></Image>
+                    <TextBlock VerticalAlignment="Center" FontSize="18">Parameters successfully uploaded!</TextBlock>
+                </StackPanel>
+            </Grid>
+        </DockPanel>
+        
+        <Grid Margin="10,10,10,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Orientation="Vertical">
+                <controls:SliderWithNumber Margin="0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber Margin="0,3"></controls:SliderWithNumber>
+            </StackPanel>
+            
+            <WebBrowser Name="wb" Grid.Column="4"></WebBrowser>
+        </Grid>
+    </DockPanel>
+</Window>
