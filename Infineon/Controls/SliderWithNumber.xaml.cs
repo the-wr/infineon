@@ -14,6 +14,8 @@ namespace Infineon.Controls
         private double multiplier = 1;
         private bool muted;
 
+        private Action<int> valueChanged;
+
         public SliderWithNumber()
         {
             InitializeComponent();
@@ -25,18 +27,31 @@ namespace Infineon.Controls
             tbValue.TextChanged += OnTextChanged;
             tbValue.LostFocus += OnLostFocus;
 
-            Setup( "Unnamed", 0, 10, 1 );
+            Setup( "Unnamed", 0, 10, 1, 0, null );
         }
 
-        public void Setup( string name, int min, int max, double multiplier )
+        public void Setup( string name, int min, int max, double multiplier, int value, Action<int> setValueCb )
         {
             tbName.Text = name;
             slValue.Minimum = min;
             slValue.Maximum = max;
+            slValue.Value = value;
             slValue.IsSnapToTickEnabled = true;
 
             this.multiplier = multiplier;
+            valueChanged = setValueCb;
+
+            // Update text
+            OnSliderValueChanged( null, null );
         }
+
+        public int Value
+        {
+            get { return (int) slValue.Value; }
+            set { slValue.Value = value; }
+        }
+
+        // -----
 
         private void OnSliderValueChanged( object sender, RoutedPropertyChangedEventArgs<double> routedPropertyChangedEventArgs )
         {
@@ -46,6 +61,7 @@ namespace Infineon.Controls
             muted = true;
 
             tbValue.Text = $"{slValue.Value * multiplier:0.0}";
+            valueChanged?.Invoke( (int)slValue.Value );
 
             muted = false;
         }
@@ -59,7 +75,10 @@ namespace Infineon.Controls
 
             double d;
             if ( double.TryParse( tbValue.Text, NumberStyles.Any, CultureInfo.CurrentCulture, out d ) )
-                slValue.Value = (int)Math.Round( d / multiplier );
+            {
+                slValue.Value = (int) Math.Round( d / multiplier );
+                valueChanged?.Invoke( (int)slValue.Value );
+            }
 
             muted = false;
         }
@@ -71,6 +90,7 @@ namespace Infineon.Controls
             {
                 slValue.Value = (int) Math.Round( d / multiplier );
                 tbValue.Text = $"{slValue.Value * multiplier:0.0}";
+                valueChanged?.Invoke( (int)slValue.Value );
             }
         }
     }

@@ -12,11 +12,9 @@
             <Image DockPanel.Dock="Left" Height="30" Source="Resources/logo.png"/>
 
             <StackPanel Name="spControllerType" Orientation="Horizontal" DockPanel.Dock="Right">
-                <ToggleButton Width="60" Tag="KLH606">KLH606</ToggleButton>
-                <ToggleButton Width="60" Tag="KLH609">KLH609</ToggleButton>
-                <ToggleButton Width="60" Tag="KLH612">KLH612</ToggleButton>
-                <ToggleButton Width="60" Tag="KLH615">KLH615</ToggleButton>
-                <ToggleButton Width="60" Tag="KLH618">KLH618</ToggleButton>
+                <ToggleButton Name="tbCont6" Width="60">6 FET v4</ToggleButton>
+                <ToggleButton Name="tbCont12" Width="60">12FET v4</ToggleButton>
+                <ToggleButton Name="tbCont18" Width="60">18FET v4</ToggleButton>
             </StackPanel>
 
             <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="10,0">Controller:</TextBlock>
@@ -62,8 +60,19 @@
             </Grid.ColumnDefinitions>
             
             <StackPanel Orientation="Vertical">
-                <controls:SliderWithNumber Margin="0,3"></controls:SliderWithNumber>
-                <controls:SliderWithNumber Margin="0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber x:Name="slBatteryCurrent" Margin="0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber x:Name="slPhaseCurrent" Margin="0,3"></controls:SliderWithNumber>
+                
+                <controls:SliderWithNumber x:Name="slSpeed1" Margin="0,30,0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber x:Name="slSpeed2" Margin="0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber x:Name="slSpeed3" Margin="0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber x:Name="slSpeed4" Margin="0,3"></controls:SliderWithNumber>
+
+                <controls:SliderWithNumber x:Name="slMinVoltage" Margin="0,30,0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber x:Name="slMinVoltageTolerance" Margin="0,3"></controls:SliderWithNumber>
+                
+                <controls:SliderWithNumber x:Name="slRegenStr" Margin="0,30,0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber x:Name="slRegenVoltage" Margin="0,3"></controls:SliderWithNumber>
             </StackPanel>
             
             <WebBrowser Name="wb" Grid.Column="4"></WebBrowser>
