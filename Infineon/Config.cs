@@ -8,5 +8,6 @@ namespace Infineon
     public class Config
     {
         public string LastControllerType { get; set; }
+        public string LastPreset { get; set; }
     }
 }

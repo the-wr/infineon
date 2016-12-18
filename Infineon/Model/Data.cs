@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml.Serialization;
 
 namespace Infineon.Model
 {
@@ -17,20 +18,24 @@ namespace Infineon.Model
         {
             BatteryCurrentMultiplier = 1.0 / 5.10,
             PhaseCurrentMultiplier = 1.0 / 2.85,
+            Type = "F6",
         };
 
         public static InfineonDesc F12 = new InfineonDesc()
         {
             BatteryCurrentMultiplier = 1.0 / 2.73,
             PhaseCurrentMultiplier = 1.0 / 1.20,
+            Type = "F12",
         };
 
         public static InfineonDesc F18 = new InfineonDesc()
         {
             BatteryCurrentMultiplier = 1.0 / 1.70,
             PhaseCurrentMultiplier = 1.0 / 0.53,
+            Type = "F18",
         };
 
+        public string Type { get; private set; }
         public double BatteryCurrentMultiplier { get; private set; }
         public double PhaseCurrentMultiplier { get; private set; }
 
@@ -61,6 +66,9 @@ namespace Infineon.Model
         public int RegenStrength { get; set; }
         public int RegenMaxVoltage { get; set; }
 
+        public string Type { get; set; }
+
+        [XmlIgnore]
         public InfineonDesc Desc { get; set; }
 
         public byte[] GetFirmwareBytes()

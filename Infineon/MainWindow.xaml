@@ -25,14 +25,10 @@
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
                 <Button>Default</Button>
                 <Rectangle Width="1" Height="10" Stroke="Black" Margin="5,0"></Rectangle>
-                <StackPanel Name="spPresets" Orientation="Horizontal">
-                    <Button>123</Button>
-                    <Button>123</Button>
-                    <Button>123</Button>
-                </StackPanel>
+                <Grid Name="gridPresets"></Grid>
                 <Rectangle Width="1" Height="10" Stroke="Black" Margin="5,0"></Rectangle>
-                <Button Width="60">Save</Button>
-                <Button Width="60">Save As</Button>
+                <Button Name="btnSave" Width="60">Save</Button>
+                <Button Name="btnSaveAs" Width="60">Save As</Button>
             </StackPanel>
             <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="0,0,10,0">Preset:</TextBlock>
             <TextBlock></TextBlock>

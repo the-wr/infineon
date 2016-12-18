@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Xml.Serialization;
 using Infineon.Model;
@@ -14,6 +15,7 @@ namespace Infineon
         private Config config;
         private Data data;
 
+        private PresetsPicker presetsPicker;
         private bool muted;
 
         public MainWindow()
@@ -29,6 +31,9 @@ namespace Infineon
             tbCont18.Unchecked += OnTbControllerTypeChecked;
 
             Init();
+
+            btnSave.Click += OnSaveClicked;
+            btnSaveAs.Click += OnSaveAsClicked;
 
             Closing += delegate { SaveConfig(); };
         }
@@ -54,13 +59,20 @@ namespace Infineon
                 data = LoadDefaultData( InfineonDesc.F18 );
             else
                 data = LoadDefaultData( InfineonDesc.F6 );
+                
+            presetsPicker = new PresetsPicker();
+            gridPresets.Children.Add( presetsPicker );
+            presetsPicker.PresetSelected += OnPresetSelected;
+            presetsPicker.Setup( config.LastControllerType, config.LastPreset );
 
+            muted = true;
             UpdateControllerTypeButtons();
+            muted = false;
         }
 
         private Data LoadDefaultData( InfineonDesc desc )
         {
-            return new Data { Desc = desc, BatteryCurrent = 100 };
+            return new Data { Desc = desc, BatteryCurrent = 100, Type = desc.Type };
         }
 
         private void UpdateControllerTypeButtons()
@@ -89,12 +101,7 @@ namespace Infineon
 
         private void SaveConfig()
         {
-            if ( data.Desc == InfineonDesc.F6 )
-                config.LastControllerType = "F6";
-            if ( data.Desc == InfineonDesc.F12 )
-                config.LastControllerType = "F12";
-            if ( data.Desc == InfineonDesc.F18 )
-                config.LastControllerType = "F18";
+            config.LastControllerType = data.Desc.Type;
 
             try
             {
@@ -102,6 +109,45 @@ namespace Infineon
                     new XmlSerializer( typeof( Config ) ).Serialize( writer, config );
             }
             catch ( Exception ) { }
+        }
+
+        // -----
+
+        private void OnPresetSelected( string shortName )
+        {
+            if ( !string.IsNullOrEmpty( shortName ) )
+            {
+                try
+                {
+                    using ( var reader = new StreamReader( "Presets\\" + shortName + ".xml" ) )
+                    {
+                        data = new XmlSerializer( typeof (Data) ).Deserialize( reader ) as Data;
+                        if ( data == null )
+                            data = LoadDefaultData( InfineonDesc.F6 ); // todo
+
+                        if ( data.Type == "F6" )
+                            data.Desc = InfineonDesc.F6;
+                        if ( data.Type == "F12" )
+                            data.Desc = InfineonDesc.F12;
+                        if ( data.Type == "F18" )
+                            data.Desc = InfineonDesc.F18;
+                    }
+
+                }
+                catch ( Exception ex )
+                {
+                    MessageBox.Show( "Can't read preset file: " + shortName, "Sum Ting Wong" );
+                }
+            }
+            else
+            {
+                data = LoadDefaultData( data.Desc );
+            }
+
+            config.LastControllerType = data.Desc.Type;
+            config.LastPreset = shortName;
+
+            UpdateControls();
         }
 
         // -----
@@ -118,7 +164,7 @@ namespace Infineon
             if ( ReferenceEquals( sender, tbCont18 ) )
                 data.Desc = InfineonDesc.F18;
 
-            data = LoadDefaultData( data.Desc );
+            presetsPicker.Setup( data.Desc.Type, string.Empty );
 
             muted = true;
             UpdateControllerTypeButtons();
@@ -127,5 +173,53 @@ namespace Infineon
             UpdateControls();
         }
 
+        private void OnSaveClicked( object sender, RoutedEventArgs e )
+        {
+            if ( string.IsNullOrEmpty( config.LastPreset ) )
+            {
+                OnSaveAsClicked( sender, e );
+                return;
+            }
+
+            using ( var writer = new StreamWriter( "Presets\\" + config.LastPreset + ".xml" ) )
+                new XmlSerializer( typeof( Data ) ).Serialize( writer, data );
+
+            MessageBox.Show( $"Preset {config.LastPreset} saved." );
+        }
+
+        private void OnSaveAsClicked( object sender, RoutedEventArgs e )
+        {
+            try
+            {
+                Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog
+                {
+                    InitialDirectory = "Presets",
+                    FileName = "",
+                    DefaultExt = ".xml",
+                    Filter = "Presets (.xml)|*.xml",
+                    RestoreDirectory = true
+                };
+
+                var result = dlg.ShowDialog();
+                if ( result == true )
+                {
+                    // Save document
+                    string filename = dlg.FileName;
+
+                    using ( var writer = new StreamWriter( filename ) )
+                        new XmlSerializer( typeof (Data) ).Serialize( writer, data );
+
+                    config.LastPreset = filename.Split( '\\' ).Last().Replace( ".xml", "" );
+                }
+            }
+            catch ( Exception ex )
+            {
+                MessageBox.Show( "Can't save preset:\r\n\r\n" + ex.Message, "Sum Ting Wong" );
+            }
+
+            presetsPicker.Setup( config.LastControllerType, config.LastPreset );
+
+            MessageBox.Show( $"Preset {config.LastPreset} saved." );
+        }
     }
 }
