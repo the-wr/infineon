@@ -23,7 +23,7 @@
         
         <DockPanel DockPanel.Dock="Top" Margin="10,0">
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                <Button>Default</Button>
+                <Button Name="btnDefault">Default</Button>
                 <Rectangle Width="1" Height="10" Stroke="Black" Margin="5,0"></Rectangle>
                 <Grid Name="gridPresets"></Grid>
                 <Rectangle Width="1" Height="10" Stroke="Black" Margin="5,0"></Rectangle>
@@ -35,13 +35,14 @@
         </DockPanel>
 
         <DockPanel Dock="Bottom" Margin="10,10">
-            <Button Width="160" DockPanel.Dock="Right">Upload parameters</Button>
+            <Button Name="btnUpload" Width="160" DockPanel.Dock="Right">Upload parameters</Button>
             <ComboBox Name="cbPort" Width="100" DockPanel.Dock="Right" IsEditable="True" Height="22" Margin="10,0"></ComboBox>
             <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right">Port:</TextBlock>
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Image Source="Resources/icon-ok.png" Width="32" Height="32" Margin="0,-1,10,-1"></Image>
-                    <TextBlock VerticalAlignment="Center" FontSize="18">Parameters successfully uploaded!</TextBlock>
+                    <Image Name="imgOk" Source="Resources/icon-ok.png" Width="32" Height="32" Margin="0,-1,10,-1" Visibility="Collapsed"></Image>
+                    <Image Name="imgError" Source="Resources/icon-not-ok.png" Width="32" Height="32" Margin="0,-1,10,-1" Visibility="Collapsed"></Image>
+                    <TextBlock Name="tbUploadMessage" VerticalAlignment="Center" FontSize="18"></TextBlock>
                 </StackPanel>
             </Grid>
         </DockPanel>

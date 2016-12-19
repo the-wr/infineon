@@ -16,6 +16,8 @@ namespace Infineon
         private Data data;
 
         private PresetsPicker presetsPicker;
+        private Uploader uploader;
+
         private bool muted;
 
         public MainWindow()
@@ -34,6 +36,8 @@ namespace Infineon
 
             btnSave.Click += OnSaveClicked;
             btnSaveAs.Click += OnSaveAsClicked;
+
+            btnUpload.Click += OnBtnUploadClicked;
 
             Closing += delegate { SaveConfig(); };
         }
@@ -68,6 +72,32 @@ namespace Infineon
             muted = true;
             UpdateControllerTypeButtons();
             muted = false;
+
+            uploader = new Uploader();
+            uploader.OnSuccess += delegate
+            {
+                imgError.Visibility = Visibility.Collapsed;
+                imgOk.Visibility = Visibility.Visible;
+                tbUploadMessage.Text = "Success!";
+            };
+            uploader.OnError += delegate(string error)
+            {
+                imgError.Visibility = Visibility.Visible;
+                imgOk.Visibility = Visibility.Collapsed;
+                tbUploadMessage.Text = "Error: " + error;
+            };
+            uploader.OnWaitingForButton += delegate
+            {
+                imgError.Visibility = Visibility.Collapsed;
+                imgOk.Visibility = Visibility.Collapsed;
+                tbUploadMessage.Text = "Press the button...";
+            };
+            uploader.OnWaitingForReply += delegate
+            {
+                imgError.Visibility = Visibility.Collapsed;
+                imgOk.Visibility = Visibility.Collapsed;
+                tbUploadMessage.Text = "Waiting for reply...";
+            };
         }
 
         private Data LoadDefaultData( InfineonDesc desc )
@@ -220,6 +250,15 @@ namespace Infineon
             presetsPicker.Setup( config.LastControllerType, config.LastPreset );
 
             MessageBox.Show( $"Preset {config.LastPreset} saved." );
+        }
+
+        private void OnBtnUploadClicked( object sender, RoutedEventArgs e )
+        {
+            imgOk.Visibility = Visibility.Collapsed;
+            imgError.Visibility = Visibility.Collapsed;
+            tbUploadMessage.Text = string.Empty;
+
+            uploader.Upload( cbPort.Text, FirmwareBuilder.BuildFirmware( data ) );
         }
     }
 }
