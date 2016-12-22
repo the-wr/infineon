@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Infineon.Model;
 
 namespace Infineon
@@ -18,8 +16,13 @@ namespace Infineon
 
         public static byte[] BuildFirmware( Data data )
         {
+            var buffer = new byte[defaultData.Length];
+            Array.Copy( defaultData, buffer, defaultData.Length - 1 );  // Don't need last byte
+
             // TODO
-            return defaultData;
+
+            buffer[buffer.Length - 1] = buffer.Aggregate( ( a, b ) => (byte)(a ^ b) );
+            return buffer;
         }
     }
 }
