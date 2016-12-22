@@ -66,7 +66,9 @@ namespace Infineon
                 data = LoadDefaultData( InfineonDesc.F18 );
             else
                 data = LoadDefaultData( InfineonDesc.F6 );
-                
+
+            cbPort.Text = config.LastPort;
+
             presetsPicker = new PresetsPicker();
             gridPresets.Children.Add( presetsPicker );
             presetsPicker.PresetSelected += OnPresetSelected;
@@ -301,6 +303,7 @@ namespace Infineon
             tbUploadMessage.Text = string.Empty;
 
             uploader.Upload( cbPort.Text, FirmwareBuilder.BuildFirmware( data ) );
+            config.LastPort = cbPort.Text;
         }
 
         private void OnPortDropDownOpened( object sender, EventArgs e )

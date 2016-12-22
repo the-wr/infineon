@@ -32,9 +32,9 @@
 
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
                 <Button Name="btnDefault">Default</Button>
-                <Rectangle Width="1" Height="10" Stroke="Black" Margin="5,0"></Rectangle>
+                <Rectangle Width="2" Height="10" Stroke="Black" Margin="5,0" Opacity="0.15"></Rectangle>
                 <Grid Name="gridPresets"></Grid>
-                <Rectangle Width="1" Height="10" Stroke="Black" Margin="5,0"></Rectangle>
+                <Rectangle Width="2" Height="10" Stroke="Black" Margin="5,0" Opacity="0.15"></Rectangle>
                 <Button Name="btnSave" Width="60">Save</Button>
                 <Button Name="btnSaveAs" Width="60">Save As</Button>
             </StackPanel>
