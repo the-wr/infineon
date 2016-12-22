@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.IO.Ports;
 using System.Linq;
 using System.Windows;
 using System.Xml.Serialization;
@@ -36,10 +37,12 @@ namespace Infineon
 
             btnSave.Click += OnSaveClicked;
             btnSaveAs.Click += OnSaveAsClicked;
+            btnDefault.Click += OnDefaultClicked;
 
             btnUpload.Click += OnBtnUploadClicked;
+            cbPort.DropDownOpened += OnPortDropDownOpened;
 
-            Closing += delegate { SaveConfig(); };
+            Closing += delegate { SaveConfig(); uploader.Dispose(); };
         }
 
         private void Init()
@@ -102,7 +105,30 @@ namespace Infineon
 
         private Data LoadDefaultData( InfineonDesc desc )
         {
-            return new Data { Desc = desc, BatteryCurrent = 100, Type = desc.Type };
+            return new Data
+            {
+                Type = desc.Type,
+                Desc = desc,
+                BatteryCurrent = 128,
+                PhaseCurrent = 128,
+
+                OnePedalMode = false,
+                HallsAngle = true,
+                MinVoltageTolerance = 2,
+                ThreePosMode = 1,
+                ThrottleProtection = true,
+                PASMaxSpeed = 27,
+                PASPulsesToSkip = 5,
+                RegenEnabled = true,
+                MinVoltage = 84,
+                Speed1Precentage = 24,
+                Speed2Precentage = 80,
+                Speed3Precentage = 104,
+                Speed4Precentage = 24,
+                RegenMaxVoltage = 168,
+                RegenStrength = 50,
+                ReverseSpeed = 16
+            };
         }
 
         private void UpdateControllerTypeButtons()
@@ -117,16 +143,26 @@ namespace Infineon
             slBatteryCurrent.Setup( "Battery current", 0, 255, data.Desc.BatteryCurrentMultiplier, data.BatteryCurrent, v => data.BatteryCurrent = v );
             slPhaseCurrent.Setup( "Phase current", 0, 255, data.Desc.PhaseCurrentMultiplier, data.PhaseCurrent, v => data.PhaseCurrent = v );
 
-            slSpeed1.Setup( "Speed 1 Percent", 0, 104, data.Desc.SpeedMultiplier, data.Speed1Precentage, v => data.Speed1Precentage = v );
-            slSpeed2.Setup( "Speed 2 Percent", 0, 104, data.Desc.SpeedMultiplier, data.Speed2Precentage, v => data.Speed2Precentage = v );
-            slSpeed3.Setup( "Speed 3 Percent", 0, 104, data.Desc.SpeedMultiplier, data.Speed3Precentage, v => data.Speed3Precentage = v );
-            slSpeed4.Setup( "Speed 4 Percent", 0, 104, data.Desc.SpeedMultiplier, data.Speed4Precentage, v => data.Speed4Precentage = v );
+            slSpeed1.Setup( "Speed 1 percent", 0, 104, data.Desc.SpeedMultiplier, data.Speed1Precentage, v => data.Speed1Precentage = v );
+            slSpeed2.Setup( "Speed 2 percent", 0, 104, data.Desc.SpeedMultiplier, data.Speed2Precentage, v => data.Speed2Precentage = v );
+            slSpeed3.Setup( "Speed 3 percent", 0, 104, data.Desc.SpeedMultiplier, data.Speed3Precentage, v => data.Speed3Precentage = v );
+            slSpeed4.Setup( "Speed 4 percent", 24, 95, data.Desc.SpeedMultiplier, data.Speed4Precentage, v => data.Speed4Precentage = v );
 
-            slMinVoltage.Setup( "Min Voltage", 0, 255, data.Desc.LVCMultiplier, data.MinVoltage, v => data.MinVoltage = v );
+            slMinVoltage.Setup( "Min voltage", 0, 255, data.Desc.LVCMultiplier, data.MinVoltage, v => data.MinVoltage = v );
             slMinVoltageTolerance.Setup( "Tolerance", 0, 255, data.Desc.LVCMultiplier, data.MinVoltageTolerance, v => data.MinVoltageTolerance = v );
 
-            slRegenStr.Setup( "Regen Strength", 0, 200, 1, data.RegenStrength, v => data.RegenStrength = v );
-            slRegenVoltage.Setup( "Regen Max Voltage", 0, 255, data.Desc.LVCMultiplier, data.RegenMaxVoltage, v => data.RegenMaxVoltage = v );
+            cbRegenEnabled.Setup( "Regen enabled", data.RegenEnabled, v => data.RegenEnabled = v );
+            slRegenStr.Setup( "Regen strength", 0, 200, 1, data.RegenStrength, v => data.RegenStrength = v );
+            slRegenVoltage.Setup( "Regen max voltage", 0, 255, data.Desc.LVCMultiplier, data.RegenMaxVoltage, v => data.RegenMaxVoltage = v );
+
+            slPasMaxSpeed.Setup( "PAS max speed", 0, 128, data.Desc.PASSpeedMultiplier, data.PASMaxSpeed, v => data.PASMaxSpeed = v );
+            slPasPulses.Setup( "Pas pulses to skip", 1, 15, 1, data.PASPulsesToSkip, v => data.PASPulsesToSkip = v );
+
+            sl3PosMode.Setup( "Speed switch mode", 1, 4, 1, data.ThreePosMode, v => data.ThreePosMode = v );
+            slReverseSpeed.Setup( "Reverse speed", 0, 128, data.Desc.ReverseSpeedMultiplier, data.ReverseSpeed, v => data.ReverseSpeed = v );
+            cbOnePedalMode.Setup( "One-pedal mode", data.OnePedalMode, v => data.OnePedalMode = v );
+            cbThrotteProtection.Setup( "Throttle protection", data.ThrottleProtection, v => data.ThrottleProtection = v );
+            cbHallsAngle.Setup( "Halls angle", data.HallsAngle, v => data.HallsAngle = v );
         }
 
         private void SaveConfig()
@@ -252,6 +288,12 @@ namespace Infineon
             MessageBox.Show( $"Preset {config.LastPreset} saved." );
         }
 
+        private void OnDefaultClicked( object sender, RoutedEventArgs e )
+        {
+            data = LoadDefaultData( data.Desc );
+            UpdateControls();
+        }
+
         private void OnBtnUploadClicked( object sender, RoutedEventArgs e )
         {
             imgOk.Visibility = Visibility.Collapsed;
@@ -259,6 +301,17 @@ namespace Infineon
             tbUploadMessage.Text = string.Empty;
 
             uploader.Upload( cbPort.Text, FirmwareBuilder.BuildFirmware( data ) );
+        }
+
+        private void OnPortDropDownOpened( object sender, EventArgs e )
+        {
+            cbPort.Items.Clear();
+
+            var ports = SerialPort.GetPortNames().ToList();
+            ports.Sort();
+
+            foreach ( var port in ports )
+                cbPort.Items.Add( port );
         }
     }
 }

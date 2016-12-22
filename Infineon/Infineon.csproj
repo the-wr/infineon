@@ -51,8 +51,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\CheckBoxControl.xaml.cs">
+      <DependentUpon>CheckBoxControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FirmwareBuilder.cs" />
     <Compile Include="Uploader.cs" />
+    <Page Include="Controls\CheckBoxControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\SliderWithNumber.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

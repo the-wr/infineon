@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Infineon"
         xmlns:controls="clr-namespace:Infineon.Controls"
         mc:Ignorable="d"
-        Title="E4BIKE CPT 0.1" Height="700" Width="1000" WindowStartupLocation="CenterScreen">
+        Title="E4BIKE CPT 0.1" Height="600" Width="1000" WindowStartupLocation="CenterScreen">
     <DockPanel SnapsToDevicePixels="True">
         <DockPanel DockPanel.Dock="Top" Margin="10,10">
             <Image DockPanel.Dock="Left" Height="30" Source="Resources/logo.png"/>
@@ -47,12 +47,12 @@
             </Grid>
         </DockPanel>
         
-        <Grid Margin="10,10,10,0">
+        <Grid Margin="30,40,30,30">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="30"/>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="30"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             
@@ -67,9 +67,21 @@
 
                 <controls:SliderWithNumber x:Name="slMinVoltage" Margin="0,30,0,3"></controls:SliderWithNumber>
                 <controls:SliderWithNumber x:Name="slMinVoltageTolerance" Margin="0,3"></controls:SliderWithNumber>
-                
-                <controls:SliderWithNumber x:Name="slRegenStr" Margin="0,30,0,3"></controls:SliderWithNumber>
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Grid.Column="2">
+                <controls:CheckBoxControl x:Name="cbRegenEnabled" Margin="0,3"></controls:CheckBoxControl>
+                <controls:SliderWithNumber x:Name="slRegenStr" Margin="0,3"></controls:SliderWithNumber>
                 <controls:SliderWithNumber x:Name="slRegenVoltage" Margin="0,3"></controls:SliderWithNumber>
+                
+                <controls:SliderWithNumber x:Name="slPasMaxSpeed" Margin="0,30,0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber x:Name="slPasPulses" Margin="0,3"></controls:SliderWithNumber>
+                
+                <controls:SliderWithNumber x:Name="sl3PosMode" Margin="0,30,0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber x:Name="slReverseSpeed" Margin="0,3"></controls:SliderWithNumber>
+                <controls:CheckBoxControl x:Name="cbOnePedalMode" Margin="0,3"></controls:CheckBoxControl>
+                <controls:CheckBoxControl x:Name="cbThrotteProtection" Margin="0,3"></controls:CheckBoxControl>
+                <controls:CheckBoxControl x:Name="cbHallsAngle" Margin="0,3"></controls:CheckBoxControl>
             </StackPanel>
             
             <WebBrowser Name="wb" Grid.Column="4"></WebBrowser>

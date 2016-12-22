@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System.Data;
+using System.Xml.Serialization;
 
 namespace Infineon.Model
 {
@@ -47,6 +48,8 @@ namespace Infineon.Model
 
     public class Data: IFirmware
     {
+        public string Type { get; set; }
+
         public int BatteryCurrent { get; set; }
         public int PhaseCurrent { get; set; }
 
@@ -58,10 +61,18 @@ namespace Infineon.Model
         public int MinVoltage { get; set; }
         public int MinVoltageTolerance { get; set; }
 
+        public bool RegenEnabled { get; set; }
         public int RegenStrength { get; set; }
         public int RegenMaxVoltage { get; set; }
 
-        public string Type { get; set; }
+        public int PASMaxSpeed { get; set; }
+        public int PASPulsesToSkip { get; set; }
+
+        public int ThreePosMode { get; set; }
+        public int ReverseSpeed { get; set; }
+        public bool OnePedalMode { get; set; }
+        public bool ThrottleProtection { get; set; }
+        public bool HallsAngle { get; set; }
 
         [XmlIgnore]
         public InfineonDesc Desc { get; set; }
