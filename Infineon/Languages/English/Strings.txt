@@ -1,0 +1,33 @@
+http://e4bike.ru?lang=en
+Controller Programming Tool
+Controller:
+Preset:
+Default
+Save
+Save as
+Port:
+Upload parameters
+Parameters uploaded successfully!
+Error: 
+Please press the button on the cable
+Waiting for controller reply...
+Battery current
+Phase current
+Speed 1 percent
+Speed 2 percent
+Speed 3 percent
+Speed 4 percent
+Min voltage
+Tolerance
+Regen enabled
+Regen strength
+Regen max voltage
+PAS max speed
+PAS pulses to skip
+Speed switch mode
+Reverse speed
+One-pedal mode
+Throttle protection
+Halls angle
+Can't save preset:
+Preset saved: 

@@ -51,6 +51,11 @@ namespace Infineon.Controls
             set { slValue.Value = value; }
         }
 
+        public void SetCaption( string text )
+        {
+            tbName.Text = text;
+        }
+
         // -----
 
         private void OnSliderValueChanged( object sender, RoutedPropertyChangedEventArgs<double> routedPropertyChangedEventArgs )

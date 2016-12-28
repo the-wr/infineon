@@ -7,6 +7,7 @@ namespace Infineon
 {
     public class Config
     {
+        public string Language { get; set; }
         public string LastControllerType { get; set; }
         public string LastPreset { get; set; }
         public string LastPort { get; set; }

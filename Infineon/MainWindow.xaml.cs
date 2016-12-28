@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
@@ -69,6 +70,13 @@ namespace Infineon
 
             cbPort.Text = config.LastPort;
 
+            foreach ( var lang in Localization.Instance.Languages )
+                cbLanguages.Items.Add( lang );
+
+            cbLanguages.SelectionChanged += OnLanguageChanged;
+            cbLanguages.SelectedItem = Localization.Instance.Languages.Contains( config.Language ) ? config.Language : "English";
+
+
             presetsPicker = new PresetsPicker();
             gridPresets.Children.Add( presetsPicker );
             presetsPicker.PresetSelected += OnPresetSelected;
@@ -83,26 +91,28 @@ namespace Infineon
             {
                 imgError.Visibility = Visibility.Collapsed;
                 imgOk.Visibility = Visibility.Visible;
-                tbUploadMessage.Text = "Success!";
+                tbUploadMessage.Text = Localization.Instance.GetString(9);
             };
             uploader.OnError += delegate(string error)
             {
                 imgError.Visibility = Visibility.Visible;
                 imgOk.Visibility = Visibility.Collapsed;
-                tbUploadMessage.Text = "Error: " + error;
+                tbUploadMessage.Text = Localization.Instance.GetString( 10 ) + error;
             };
             uploader.OnWaitingForButton += delegate
             {
                 imgError.Visibility = Visibility.Collapsed;
                 imgOk.Visibility = Visibility.Collapsed;
-                tbUploadMessage.Text = "Press the button...";
+                tbUploadMessage.Text = Localization.Instance.GetString( 11 );
             };
             uploader.OnWaitingForReply += delegate
             {
                 imgError.Visibility = Visibility.Collapsed;
                 imgOk.Visibility = Visibility.Collapsed;
-                tbUploadMessage.Text = "Waiting for reply...";
+                tbUploadMessage.Text = Localization.Instance.GetString( 12 );
             };
+
+            imgLogo.MouseDown += delegate { Process.Start( Localization.Instance.GetString( 0 ) ); };
         }
 
         private Data LoadDefaultData( InfineonDesc desc )
@@ -142,29 +152,31 @@ namespace Infineon
 
         private void UpdateControls()
         {
-            slBatteryCurrent.Setup( "Battery current", 0, 255, data.Desc.BatteryCurrentMultiplier, data.BatteryCurrent, v => data.BatteryCurrent = v );
-            slPhaseCurrent.Setup( "Phase current", 0, 255, data.Desc.PhaseCurrentMultiplier, data.PhaseCurrent, v => data.PhaseCurrent = v );
+            var l = Localization.Instance;
 
-            slSpeed1.Setup( "Speed 1 percent", 0, 104, data.Desc.SpeedMultiplier, data.Speed1Precentage, v => data.Speed1Precentage = v );
-            slSpeed2.Setup( "Speed 2 percent", 0, 104, data.Desc.SpeedMultiplier, data.Speed2Precentage, v => data.Speed2Precentage = v );
-            slSpeed3.Setup( "Speed 3 percent", 0, 104, data.Desc.SpeedMultiplier, data.Speed3Precentage, v => data.Speed3Precentage = v );
-            slSpeed4.Setup( "Speed 4 percent", 24, 95, data.Desc.SpeedMultiplier, data.Speed4Precentage, v => data.Speed4Precentage = v );
+            slBatteryCurrent.Setup( l.GetString( 13 ), 0, 255, data.Desc.BatteryCurrentMultiplier, data.BatteryCurrent, v => data.BatteryCurrent = v );
+            slPhaseCurrent.Setup( l.GetString( 14 ), 0, 255, data.Desc.PhaseCurrentMultiplier, data.PhaseCurrent, v => data.PhaseCurrent = v );
 
-            slMinVoltage.Setup( "Min voltage", 0, 255, data.Desc.LVCMultiplier, data.MinVoltage, v => data.MinVoltage = v );
-            slMinVoltageTolerance.Setup( "Tolerance", 0, 255, data.Desc.LVCMultiplier, data.MinVoltageTolerance, v => data.MinVoltageTolerance = v );
+            slSpeed1.Setup( l.GetString( 15 ), 0, 104, data.Desc.SpeedMultiplier, data.Speed1Precentage, v => data.Speed1Precentage = v );
+            slSpeed2.Setup( l.GetString( 16 ), 0, 104, data.Desc.SpeedMultiplier, data.Speed2Precentage, v => data.Speed2Precentage = v );
+            slSpeed3.Setup( l.GetString( 17 ), 0, 104, data.Desc.SpeedMultiplier, data.Speed3Precentage, v => data.Speed3Precentage = v );
+            slSpeed4.Setup( l.GetString( 18 ), 24, 95, data.Desc.SpeedMultiplier, data.Speed4Precentage, v => data.Speed4Precentage = v );
 
-            cbRegenEnabled.Setup( "Regen enabled", data.RegenEnabled, v => data.RegenEnabled = v );
-            slRegenStr.Setup( "Regen strength", 0, 200, 1, data.RegenStrength, v => data.RegenStrength = v );
-            slRegenVoltage.Setup( "Regen max voltage", 0, 255, data.Desc.LVCMultiplier, data.RegenMaxVoltage, v => data.RegenMaxVoltage = v );
+            slMinVoltage.Setup( l.GetString( 19 ), 0, 255, data.Desc.LVCMultiplier, data.MinVoltage, v => data.MinVoltage = v );
+            slMinVoltageTolerance.Setup( l.GetString( 20 ), 0, 255, data.Desc.LVCMultiplier, data.MinVoltageTolerance, v => data.MinVoltageTolerance = v );
 
-            slPasMaxSpeed.Setup( "PAS max speed", 0, 128, data.Desc.PASSpeedMultiplier, data.PASMaxSpeed, v => data.PASMaxSpeed = v );
-            slPasPulses.Setup( "Pas pulses to skip", 1, 15, 1, data.PASPulsesToSkip, v => data.PASPulsesToSkip = v );
+            cbRegenEnabled.Setup( l.GetString( 21 ), data.RegenEnabled, v => data.RegenEnabled = v );
+            slRegenStr.Setup( l.GetString( 22 ), 0, 200, 1, data.RegenStrength, v => data.RegenStrength = v );
+            slRegenVoltage.Setup( l.GetString( 23 ), 0, 255, data.Desc.LVCMultiplier, data.RegenMaxVoltage, v => data.RegenMaxVoltage = v );
 
-            sl3PosMode.Setup( "Speed switch mode", 1, 4, 1, data.ThreePosMode, v => data.ThreePosMode = v );
-            slReverseSpeed.Setup( "Reverse speed", 0, 128, data.Desc.ReverseSpeedMultiplier, data.ReverseSpeed, v => data.ReverseSpeed = v );
-            cbOnePedalMode.Setup( "One-pedal mode", data.OnePedalMode, v => data.OnePedalMode = v );
-            cbThrotteProtection.Setup( "Throttle protection", data.ThrottleProtection, v => data.ThrottleProtection = v );
-            cbHallsAngle.Setup( "Halls angle", data.HallsAngle, v => data.HallsAngle = v );
+            slPasMaxSpeed.Setup( l.GetString( 24 ), 0, 128, data.Desc.PASSpeedMultiplier, data.PASMaxSpeed, v => data.PASMaxSpeed = v );
+            slPasPulses.Setup( l.GetString( 25 ), 1, 15, 1, data.PASPulsesToSkip, v => data.PASPulsesToSkip = v );
+
+            sl3PosMode.Setup( l.GetString( 26 ), 1, 4, 1, data.ThreePosMode, v => data.ThreePosMode = v );
+            slReverseSpeed.Setup( l.GetString( 27 ), 0, 128, data.Desc.ReverseSpeedMultiplier, data.ReverseSpeed, v => data.ReverseSpeed = v );
+            cbOnePedalMode.Setup( l.GetString( 28 ), data.OnePedalMode, v => data.OnePedalMode = v );
+            cbThrotteProtection.Setup( l.GetString( 29 ), data.ThrottleProtection, v => data.ThrottleProtection = v );
+            cbHallsAngle.Setup( l.GetString( 30 ), data.HallsAngle, v => data.HallsAngle = v );
         }
 
         private void SaveConfig()
@@ -252,7 +264,7 @@ namespace Infineon
             using ( var writer = new StreamWriter( "Presets\\" + config.LastPreset + ".xml" ) )
                 new XmlSerializer( typeof( Data ) ).Serialize( writer, data );
 
-            MessageBox.Show( $"Preset {config.LastPreset} saved." );
+            MessageBox.Show( Localization.Instance.GetString( 32 ) + config.LastPreset );
         }
 
         private void OnSaveAsClicked( object sender, RoutedEventArgs e )
@@ -282,12 +294,12 @@ namespace Infineon
             }
             catch ( Exception ex )
             {
-                MessageBox.Show( "Can't save preset:\r\n\r\n" + ex.Message, "Sum Ting Wong" );
+                MessageBox.Show( Localization.Instance.GetString( 31 ) + "\r\n\r\n" + ex.Message, "Sum Ting Wong" );
             }
 
             presetsPicker.Setup( config.LastControllerType, config.LastPreset );
 
-            MessageBox.Show( $"Preset {config.LastPreset} saved." );
+            MessageBox.Show( Localization.Instance.GetString( 32 ) + config.LastPreset );
         }
 
         private void OnDefaultClicked( object sender, RoutedEventArgs e )
@@ -313,8 +325,50 @@ namespace Infineon
             var ports = SerialPort.GetPortNames().ToList();
             ports.Sort();
 
-            foreach ( var port in ports )
+            foreach ( var port in ports )   
                 cbPort.Items.Add( port );
+        }
+
+        private void OnLanguageChanged( object sender, System.Windows.Controls.SelectionChangedEventArgs e )
+        {
+            var l = Localization.Instance;
+            l.SetLanguage( cbLanguages.SelectedItem.ToString() );
+
+            config.Language = cbLanguages.SelectedItem.ToString();
+            SaveConfig();
+
+            tbCaption.Text = l.GetString( 1 );
+            tbController.Text = l.GetString( 2 );
+            tbPreset.Text = l.GetString( 3 );
+            btnDefault.Content = l.GetString( 4 );
+            btnSave.Content = l.GetString( 5 );
+            btnSaveAs.Content = l.GetString( 6 );
+            tbPort.Text = l.GetString( 7 );
+            btnUpload.Content = l.GetString( 8 );
+
+            slBatteryCurrent.SetCaption( l.GetString( 13 ) );//( "Battery current"
+            slPhaseCurrent.SetCaption( l.GetString( 14 ) );//( "Phase current"
+
+            slSpeed1.SetCaption( l.GetString( 15 ) );//( "Speed 1 percent"
+            slSpeed2.SetCaption( l.GetString( 16 ) );//( "Speed 2 percent"
+            slSpeed3.SetCaption( l.GetString( 17 ) );//( "Speed 3 percent"
+            slSpeed4.SetCaption( l.GetString( 18 ) );//( "Speed 4 percent"
+
+            slMinVoltage.SetCaption( l.GetString( 19 ) );//( "Min voltage"
+            slMinVoltageTolerance.SetCaption( l.GetString( 20 ) );//( "Tolerance"
+
+            cbRegenEnabled.SetCaption( l.GetString( 21 ) );//( "Regen enabled"
+            slRegenStr.SetCaption( l.GetString( 22 ) );//( "Regen strength"
+            slRegenVoltage.SetCaption( l.GetString( 23 ) );//( "Regen max voltage"
+
+            slPasMaxSpeed.SetCaption( l.GetString( 24 ) );//( "PAS max speed"
+            slPasPulses.SetCaption( l.GetString( 25 ) );//( "Pas pulses to skip"
+
+            sl3PosMode.SetCaption( l.GetString( 26 ) );//( "Speed switch mode"
+            slReverseSpeed.SetCaption( l.GetString( 27 ) );//( "Reverse speed"
+            cbOnePedalMode.SetCaption( l.GetString( 28 ) );//( "One-pedal mode"
+            cbThrotteProtection.SetCaption( l.GetString( 29 ) );//( "Throttle protection"
+            cbHallsAngle.SetCaption( l.GetString( 30 ) );//( "Halls angle"
         }
     }
 }

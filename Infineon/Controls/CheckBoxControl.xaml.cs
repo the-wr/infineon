@@ -37,5 +37,10 @@ namespace Infineon.Controls
             get { return cbValue.IsChecked ?? false; }
             set { cbValue.IsChecked = value; }
         }
+
+        public void SetCaption( string text )
+        {
+            tbName.Text = text;
+        }
     }
 }
