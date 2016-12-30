@@ -68,10 +68,10 @@ namespace Infineon
             //buffer[34] = 0;
             //buffer[35] = 0;
             //buffer[36] = 0;
-            //buffer[37] = 0;
-            //buffer[38] = 0;
-            //buffer[39] = 0;
-            //buffer[40] = 0;
+            buffer[37] = (byte)data.Speed1CurrentPrecentage;
+            buffer[38] = (byte)data.Speed2CurrentPrecentage;
+            buffer[39] = (byte)data.Speed3CurrentPrecentage;
+            buffer[40] = (byte)data.Speed4CurrentPrecentage;
             //buffer[41] = 0;
             //buffer[42] = 0;
             //buffer[43] = 0;

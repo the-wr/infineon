@@ -13,10 +13,10 @@ Please press and hold the button on the cable...
 Waiting for controller reply...
 Battery current
 Phase current
-Speed 1 limit
-Speed 2 limit
-Speed 3 limit
-Speed 4 limit
+Speed 1 limit %
+Speed 2 limit %
+Speed 3 limit %
+Speed 4 limit %
 Min voltage
 Tolerance
 Regen enabled
@@ -31,3 +31,7 @@ Throttle protection
 Halls angle
 Can't save preset:
 Preset saved: 
+Speed 1 current %
+Speed 2 current %
+Speed 3 current %
+Speed 4 current %

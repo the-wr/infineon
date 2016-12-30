@@ -131,6 +131,11 @@ namespace Infineon
             BindHelpToControl( slSpeed3, "Speed3" );
             BindHelpToControl( slSpeed4, "Speed4" );
 
+            BindHelpToControl( slSpeed1Current, "Speed1Current" );
+            BindHelpToControl( slSpeed2Current, "Speed2Current" );
+            BindHelpToControl( slSpeed3Current, "Speed3Current" );
+            BindHelpToControl( slSpeed4Current, "Speed4Current" );
+
             BindHelpToControl( slMinVoltage, "MinVoltage" );
             BindHelpToControl( slMinVoltageTolerance, "VoltageTolerance" );
 
@@ -167,9 +172,13 @@ namespace Infineon
                 RegenEnabled = true,
                 MinVoltage = 84,
                 Speed1Precentage = 24,
+                Speed1CurrentPrecentage = 38,
                 Speed2Precentage = 80,
+                Speed2CurrentPrecentage = 128,
                 Speed3Precentage = 104,
+                Speed3CurrentPrecentage = 141,
                 Speed4Precentage = 24,
+                Speed4CurrentPrecentage = 38,
                 RegenMaxVoltage = 168,
                 RegenStrength = 50,
                 ReverseSpeed = 16
@@ -191,9 +200,13 @@ namespace Infineon
             slPhaseCurrent.Setup( l.GetString( 14 ), 0, 255, data.Desc.PhaseCurrentMultiplier, data.PhaseCurrent, v => data.PhaseCurrent = v );
 
             slSpeed1.Setup( l.GetString( 15 ), 0, 104, data.Desc.SpeedMultiplier, data.Speed1Precentage, v => data.Speed1Precentage = v );
+            slSpeed1Current.Setup( l.GetString( 33 ), 0, 141, data.Desc.CurrentMultiplierPercent, data.Speed1CurrentPrecentage, v => data.Speed1CurrentPrecentage = v );
             slSpeed2.Setup( l.GetString( 16 ), 0, 104, data.Desc.SpeedMultiplier, data.Speed2Precentage, v => data.Speed2Precentage = v );
+            slSpeed2Current.Setup( l.GetString( 34 ), 0, 141, data.Desc.CurrentMultiplierPercent, data.Speed2CurrentPrecentage, v => data.Speed2CurrentPrecentage = v );
             slSpeed3.Setup( l.GetString( 17 ), 0, 104, data.Desc.SpeedMultiplier, data.Speed3Precentage, v => data.Speed3Precentage = v );
+            slSpeed3Current.Setup( l.GetString( 35 ), 0, 141, data.Desc.CurrentMultiplierPercent, data.Speed3CurrentPrecentage, v => data.Speed3CurrentPrecentage = v );
             slSpeed4.Setup( l.GetString( 18 ), 24, 95, data.Desc.SpeedMultiplier, data.Speed4Precentage, v => data.Speed4Precentage = v );
+            slSpeed4Current.Setup( l.GetString( 36 ), 0, 141, data.Desc.CurrentMultiplierPercent, data.Speed4CurrentPrecentage, v => data.Speed4CurrentPrecentage = v );
 
             slMinVoltage.Setup( l.GetString( 19 ), 0, 255, data.Desc.LVCMultiplier, data.MinVoltage, v => data.MinVoltage = v );
             slMinVoltageTolerance.Setup( l.GetString( 20 ), 0, 255, data.Desc.LVCMultiplier, data.MinVoltageTolerance, v => data.MinVoltageTolerance = v );
@@ -383,9 +396,16 @@ namespace Infineon
             slPhaseCurrent.SetCaption( l.GetString( 14 ) );//( "Phase current"
 
             slSpeed1.SetCaption( l.GetString( 15 ) );//( "Speed 1 percent"
+            slSpeed1Current.SetCaption( l.GetString( 33 ) );
+
             slSpeed2.SetCaption( l.GetString( 16 ) );//( "Speed 2 percent"
+            slSpeed2Current.SetCaption( l.GetString( 34 ) );//( "Speed 1 percent"
+
             slSpeed3.SetCaption( l.GetString( 17 ) );//( "Speed 3 percent"
+            slSpeed3Current.SetCaption( l.GetString( 35 ) );//( "Speed 1 percent"
+
             slSpeed4.SetCaption( l.GetString( 18 ) );//( "Speed 4 percent"
+            slSpeed4Current.SetCaption( l.GetString( 36 ) );//( "Speed 1 percent"
 
             slMinVoltage.SetCaption( l.GetString( 19 ) );//( "Min voltage"
             slMinVoltageTolerance.SetCaption( l.GetString( 20 ) );//( "Tolerance"

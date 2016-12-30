@@ -48,6 +48,7 @@ namespace Infineon.Model
         public double SoftStartCurrentMultiplier => 1.0 / 1.28;
         public double LVCBatteryCurrentMultiplier => 1.0 / 13.18;
         public double RecoverSpeedMultiplier => 1.0 / 1.28;
+        public double CurrentMultiplierPercent => 1.0 / 1.28;
     }
 
     public class Data: IFirmware
@@ -58,9 +59,13 @@ namespace Infineon.Model
         public int PhaseCurrent { get; set; }
 
         public int Speed1Precentage { get; set; }
+        public int Speed1CurrentPrecentage { get; set; }
         public int Speed2Precentage { get; set; }
+        public int Speed2CurrentPrecentage { get; set; }
         public int Speed3Precentage { get; set; }
+        public int Speed3CurrentPrecentage { get; set; }
         public int Speed4Precentage { get; set; }
+        public int Speed4CurrentPrecentage { get; set; }
 
         public int MinVoltage { get; set; }
         public int MinVoltageTolerance { get; set; }

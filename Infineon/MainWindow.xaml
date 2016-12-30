@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Infineon"
         xmlns:controls="clr-namespace:Infineon.Controls"
         mc:Ignorable="d"
-        Title="E4BIKE CPT 0.1" Height="650" Width="1000" WindowStartupLocation="CenterScreen">
+        Title="E4BIKE CPT 0.1" Height="730" Width="1040" WindowStartupLocation="CenterScreen">
     <DockPanel SnapsToDevicePixels="True">
 
         <!--
@@ -19,7 +19,7 @@
             <DockPanel DockPanel.Dock="Top" Margin="30,30,30,20">
                 <Image Name="imgLogo" DockPanel.Dock="Left" Height="30" Source="Resources/logo.png"/>
                 <ComboBox Name="cbLanguages" DockPanel.Dock="Right" Width="120" Height="22"></ComboBox>
-                <TextBlock Name="tbCaption" VerticalAlignment="Center" FontSize="18" Margin="10,0">Controller Programming Tool</TextBlock>
+                <TextBlock Name="tbCaption" VerticalAlignment="Center" FontSize="18" Margin="20,0">Controller Programming Tool</TextBlock>
             </DockPanel>
 
         <DockPanel DockPanel.Dock="Top" Margin="30,0">
@@ -59,9 +59,9 @@
         <Grid Margin="30,50,30,30">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="40"/>
                 <ColumnDefinition/>
-                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="40"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
@@ -69,24 +69,31 @@
                 <controls:SliderWithNumber x:Name="slBatteryCurrent" Margin="0,3"></controls:SliderWithNumber>
                 <controls:SliderWithNumber x:Name="slPhaseCurrent" Margin="0,3"></controls:SliderWithNumber>
 
-                <controls:SliderWithNumber x:Name="slSpeed1" Margin="0,30,0,3"></controls:SliderWithNumber>
-                <controls:SliderWithNumber x:Name="slSpeed2" Margin="0,3"></controls:SliderWithNumber>
-                <controls:SliderWithNumber x:Name="slSpeed3" Margin="0,3"></controls:SliderWithNumber>
-                <controls:SliderWithNumber x:Name="slSpeed4" Margin="0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber x:Name="slSpeed1" Margin="0,33,0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber x:Name="slSpeed1Current" Margin="0,3"></controls:SliderWithNumber>
 
-                <controls:SliderWithNumber x:Name="slMinVoltage" Margin="0,30,0,3"></controls:SliderWithNumber>
-                <controls:SliderWithNumber x:Name="slMinVoltageTolerance" Margin="0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber x:Name="slSpeed2" Margin="0,33,0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber x:Name="slSpeed2Current" Margin="0,3"></controls:SliderWithNumber>
+                
+                <controls:SliderWithNumber x:Name="slSpeed3" Margin="0,33,0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber x:Name="slSpeed3Current" Margin="0,3"></controls:SliderWithNumber>
+                
+                <controls:SliderWithNumber x:Name="slSpeed4" Margin="0,33,0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber x:Name="slSpeed4Current" Margin="0,3"></controls:SliderWithNumber>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Grid.Column="2">
-                <controls:CheckBoxControl x:Name="cbRegenEnabled" Margin="0,3"></controls:CheckBoxControl>
+                <controls:SliderWithNumber x:Name="slMinVoltage" Margin="0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber x:Name="slMinVoltageTolerance" Margin="0,3"></controls:SliderWithNumber>
+                
+                <controls:CheckBoxControl x:Name="cbRegenEnabled" Margin="0,33,0,3"></controls:CheckBoxControl>
                 <controls:SliderWithNumber x:Name="slRegenStr" Margin="0,3"></controls:SliderWithNumber>
                 <controls:SliderWithNumber x:Name="slRegenVoltage" Margin="0,3"></controls:SliderWithNumber>
 
-                <controls:SliderWithNumber x:Name="slPasMaxSpeed" Margin="0,30,0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber x:Name="slPasMaxSpeed" Margin="0,33,0,3"></controls:SliderWithNumber>
                 <controls:SliderWithNumber x:Name="slPasPulses" Margin="0,3"></controls:SliderWithNumber>
 
-                <controls:SliderWithNumber x:Name="sl3PosMode" Margin="0,30,0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber x:Name="sl3PosMode" Margin="0,33,0,3"></controls:SliderWithNumber>
                 <controls:SliderWithNumber x:Name="slReverseSpeed" Margin="0,3"></controls:SliderWithNumber>
                 <controls:CheckBoxControl x:Name="cbOnePedalMode" Margin="0,3"></controls:CheckBoxControl>
                 <controls:CheckBoxControl x:Name="cbThrotteProtection" Margin="0,3"></controls:CheckBoxControl>
