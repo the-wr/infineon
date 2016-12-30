@@ -19,12 +19,16 @@ namespace Infineon
 
         private PresetsPicker presetsPicker;
         private Uploader uploader;
+        private HelpWindow helpWindow;
 
         private bool muted;
+        private string lastHelpKey = "Index";
 
         public MainWindow()
         {
             InitializeComponent();
+
+            helpWindow = new HelpWindow( wb );
 
             tbCont6.Checked += OnTbControllerTypeChecked;
             tbCont12.Checked += OnTbControllerTypeChecked;
@@ -44,6 +48,7 @@ namespace Infineon
             cbPort.DropDownOpened += OnPortDropDownOpened;
 
             Closing += delegate { SaveConfig(); uploader.Dispose(); };
+
         }
 
         private void Init()
@@ -113,6 +118,13 @@ namespace Infineon
             };
 
             imgLogo.MouseDown += delegate { Process.Start( Localization.Instance.GetString( 0 ) ); };
+
+            BindHelpToControl( btnDefault, "ResetToDefault" );
+            BindHelpToControl( btnSave, "SavePreset" );
+            BindHelpToControl( btnSaveAs, "SavePreset" );
+
+            BindHelpToControl( slBatteryCurrent, "BatteryCurrent" );
+            BindHelpToControl( slPhaseCurrent, "PhaseCurrent" );
         }
 
         private Data LoadDefaultData( InfineonDesc desc )
@@ -369,6 +381,17 @@ namespace Infineon
             cbOnePedalMode.SetCaption( l.GetString( 28 ) );//( "One-pedal mode"
             cbThrotteProtection.SetCaption( l.GetString( 29 ) );//( "Throttle protection"
             cbHallsAngle.SetCaption( l.GetString( 30 ) );//( "Halls angle"
+
+            helpWindow.ShowHelp( lastHelpKey );
+        }
+
+        private void BindHelpToControl( FrameworkElement element, string helpKey )
+        {
+            element.MouseEnter += delegate
+            {
+                lastHelpKey = helpKey;
+                helpWindow.ShowHelp( helpKey );
+            };
         }
     }
 }

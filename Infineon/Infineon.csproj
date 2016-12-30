@@ -38,6 +38,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -55,6 +56,7 @@
       <DependentUpon>CheckBoxControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="FirmwareBuilder.cs" />
+    <Compile Include="HelpWindow.cs" />
     <Compile Include="Localization.cs" />
     <Compile Include="Uploader.cs" />
     <Page Include="Controls\CheckBoxControl.xaml">
@@ -124,6 +126,17 @@
   <ItemGroup>
     <Resource Include="Resources\icon-not-ok.png" />
     <Resource Include="Resources\icon-ok.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="MSHTML">
+      <Guid>{3050F1C5-98B5-11CF-BB82-00AA00BDCE0B}</Guid>
+      <VersionMajor>4</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
