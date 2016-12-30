@@ -125,6 +125,27 @@ namespace Infineon
 
             BindHelpToControl( slBatteryCurrent, "BatteryCurrent" );
             BindHelpToControl( slPhaseCurrent, "PhaseCurrent" );
+
+            BindHelpToControl( slSpeed1, "Speed1" );
+            BindHelpToControl( slSpeed2, "Speed2" );
+            BindHelpToControl( slSpeed3, "Speed3" );
+            BindHelpToControl( slSpeed4, "Speed4" );
+
+            BindHelpToControl( slMinVoltage, "MinVoltage" );
+            BindHelpToControl( slMinVoltageTolerance, "VoltageTolerance" );
+
+            BindHelpToControl( cbRegenEnabled, "RegenEnabled" );
+            BindHelpToControl( slRegenStr, "RegenStrength" );
+            BindHelpToControl( slRegenVoltage, "RegenVoltage" );
+
+            BindHelpToControl( slPasMaxSpeed, "PasMaxSpeed" );
+            BindHelpToControl( slPasPulses, "PasPulses" );
+
+            BindHelpToControl( sl3PosMode, "3PosMode" );
+            BindHelpToControl( slReverseSpeed, "ReverseSpeed" );
+            BindHelpToControl( cbOnePedalMode, "OnePedalMode" );
+            BindHelpToControl( cbThrotteProtection, "ThrottleProtection" );
+            BindHelpToControl( cbHallsAngle, "HallsAngle" );
         }
 
         private Data LoadDefaultData( InfineonDesc desc )

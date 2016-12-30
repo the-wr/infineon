@@ -9,14 +9,14 @@ Port:
 Upload parameters
 Parameters uploaded successfully!
 Error: 
-Please press the button on the cable
+Please press and hold the button on the cable...
 Waiting for controller reply...
 Battery current
 Phase current
-Speed 1 percent
-Speed 2 percent
-Speed 3 percent
-Speed 4 percent
+Speed 1 limit
+Speed 2 limit
+Speed 3 limit
+Speed 4 limit
 Min voltage
 Tolerance
 Regen enabled
