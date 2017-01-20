@@ -37,7 +37,7 @@ namespace Infineon
             buffer[4] = (byte)data.MinVoltage;
             buffer[5] = (byte)data.MinVoltageTolerance;
             //buffer[6] = 96;
-            buffer[7] = (byte)data.ThreePosMode;
+            buffer[7] = (byte)( data.ThreePosMode - 1 );
             buffer[8] = (byte)data.Speed1Precentage;
             buffer[9] = (byte)data.Speed2Precentage;
             buffer[10] = (byte)data.Speed3Precentage;
