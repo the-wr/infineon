@@ -21,7 +21,7 @@ Min voltage
 Tolerance
 Regen enabled
 Regen strength
-Regen max voltage
+Max voltage
 PAS max speed
 PAS pulses to skip
 Speed switch mode

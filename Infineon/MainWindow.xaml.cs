@@ -141,7 +141,7 @@ namespace Infineon
 
             BindHelpToControl( cbRegenEnabled, "RegenEnabled" );
             BindHelpToControl( slRegenStr, "RegenStrength" );
-            BindHelpToControl( slRegenVoltage, "RegenVoltage" );
+            BindHelpToControl( slMaxVoltage, "MaxVoltage" );
 
             BindHelpToControl( slPasMaxSpeed, "PasMaxSpeed" );
             BindHelpToControl( slPasPulses, "PasPulses" );
@@ -213,7 +213,7 @@ namespace Infineon
 
             cbRegenEnabled.Setup( l.GetString( 21 ), data.RegenEnabled, v => data.RegenEnabled = v );
             slRegenStr.Setup( l.GetString( 22 ), 0, 200, 1, data.RegenStrength, v => data.RegenStrength = v );
-            slRegenVoltage.Setup( l.GetString( 23 ), 0, 255, data.Desc.LVCMultiplier, data.RegenMaxVoltage, v => data.RegenMaxVoltage = v );
+            slMaxVoltage.Setup( l.GetString( 23 ), 0, 255, data.Desc.LVCMultiplier, data.RegenMaxVoltage, v => data.RegenMaxVoltage = v );
 
             slPasMaxSpeed.Setup( l.GetString( 24 ), 0, 128, data.Desc.PASSpeedMultiplier, data.PASMaxSpeed, v => data.PASMaxSpeed = v );
             slPasPulses.Setup( l.GetString( 25 ), 1, 15, 1, data.PASPulsesToSkip, v => data.PASPulsesToSkip = v );
@@ -412,7 +412,7 @@ namespace Infineon
 
             cbRegenEnabled.SetCaption( l.GetString( 21 ) );//( "Regen enabled"
             slRegenStr.SetCaption( l.GetString( 22 ) );//( "Regen strength"
-            slRegenVoltage.SetCaption( l.GetString( 23 ) );//( "Regen max voltage"
+            slMaxVoltage.SetCaption( l.GetString( 23 ) );//( "Regen max voltage"
 
             slPasMaxSpeed.SetCaption( l.GetString( 24 ) );//( "PAS max speed"
             slPasPulses.SetCaption( l.GetString( 25 ) );//( "Pas pulses to skip"

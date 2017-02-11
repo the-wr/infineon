@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Infineon"
         xmlns:controls="clr-namespace:Infineon.Controls"
         mc:Ignorable="d"
-        Title="E4BIKE CPT 0.1" Height="730" Width="1040" WindowStartupLocation="CenterScreen">
+        Title="E4BIKE CPT R2" Height="730" Width="1040" WindowStartupLocation="CenterScreen">
     <DockPanel SnapsToDevicePixels="True">
 
         <!--
@@ -84,11 +84,11 @@
 
             <StackPanel Orientation="Vertical" Grid.Column="2">
                 <controls:SliderWithNumber x:Name="slMinVoltage" Margin="0,3"></controls:SliderWithNumber>
+                <controls:SliderWithNumber x:Name="slMaxVoltage" Margin="0,3"></controls:SliderWithNumber>
                 <controls:SliderWithNumber x:Name="slMinVoltageTolerance" Margin="0,3"></controls:SliderWithNumber>
                 
                 <controls:CheckBoxControl x:Name="cbRegenEnabled" Margin="0,33,0,3"></controls:CheckBoxControl>
                 <controls:SliderWithNumber x:Name="slRegenStr" Margin="0,3"></controls:SliderWithNumber>
-                <controls:SliderWithNumber x:Name="slRegenVoltage" Margin="0,3"></controls:SliderWithNumber>
 
                 <controls:SliderWithNumber x:Name="slPasMaxSpeed" Margin="0,33,0,3"></controls:SliderWithNumber>
                 <controls:SliderWithNumber x:Name="slPasPulses" Margin="0,3"></controls:SliderWithNumber>
