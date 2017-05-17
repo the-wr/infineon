@@ -232,6 +232,11 @@ namespace Infineon.Model
         public bool ThrottleProtection { get; set; }
         public bool HallsAngle { get; set; }
 
+        public bool SoftStartEnabled { get; set; }
+        public int SoftStartTime { get; set; }
+        public int SlowSpeed { get; set; }
+        public int RecoverSpeed { get; set; }
+
         [XmlIgnore]
         public InfDesc Desc { get; set; }
 
