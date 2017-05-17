@@ -6,9 +6,13 @@
         xmlns:local="clr-namespace:Infineon"
         xmlns:controls="clr-namespace:Infineon.Controls"
         mc:Ignorable="d"
-        Title="E4BIKE Controller Programming Tool (R7)" Height="730" Width="1040" WindowStartupLocation="CenterScreen">
+        Title="E4BIKE CPT R2" Height="850" Width="1040" WindowStartupLocation="CenterScreen">
     <DockPanel SnapsToDevicePixels="True">
-
+        <!--
+        <DockPanel.LayoutTransform>
+            <ScaleTransform ScaleX="0.7" ScaleY="0.7"></ScaleTransform>
+        </DockPanel.LayoutTransform>
+        -->
         <!--
         <StackPanel Orientation="Horizontal" Margin="30,30,0,0">
             <Image DockPanel.Dock="Left" Height="30" Source="Resources/logo.png"/>

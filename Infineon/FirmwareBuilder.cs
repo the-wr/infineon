@@ -80,7 +80,11 @@ namespace Infineon
             0x26, // 26
             0x1B, 0x00, 0x00, 0x00,
             0xe0, // 31
-            0x00, 0x50, 0x50, 0x50, 0x50, 0x80, 0x80, 0x80, 0x80, 0x84, 0x01, 0x1c, 0x2d, 0x55, 0x00, 0x00,
+            0x00, 0x50, 0x50, 0x50, 0x50,
+            0x80, 0x80, 0x80, 0x80,
+            0x84, // 41
+            0x01, 0x1c, 0x2d,
+            0x55, 0x00, 0x00,
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x39,
         };
 
@@ -170,7 +174,8 @@ namespace Infineon
             //buffer[28] = 0;
             //buffer[29] = 0;
             //buffer[30] = 0;
-            buffer[31] = (byte)( ( data.RegenEnabled ? 1 << 6 : 0 ) +
+            buffer[31] = (byte)( ( data.SoftStartEnabled ? 1 << 5 : 0 ) +
+                                 ( data.RegenEnabled ? 1 << 6 : 0 ) +
                                  ( data.HallsAngle ? 1 << 7 : 0 ) );
             //buffer[32] = 0;
             //buffer[33] = 0;
@@ -182,9 +187,9 @@ namespace Infineon
             buffer[39] = (byte)data.Speed3CurrentPercentage;
             buffer[40] = (byte)data.Speed4CurrentPercentage;
             //buffer[41] = 0;
-            //buffer[42] = 0;
-            //buffer[43] = 0;
-            //buffer[44] = 0;
+            buffer[42] = (byte)data.SoftStartTime;
+            buffer[43] = (byte)data.SlowSpeed;
+            buffer[44] = (byte)data.RecoverSpeed;
             //buffer[45] = 0;
 
             buffer[buffer.Length - 1] = buffer.Aggregate( ( a, b ) => (byte)( a ^ b ) );
