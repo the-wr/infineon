@@ -16,7 +16,9 @@ namespace Infineon.Model
             PhaseCurrentMultiplier = 1.0 / 2.85,
             Type = "F6",
             FirmwareType = 1,
-        };
+            LVCMultiplier = 1.0 / 3.285,
+            VoltageRangeLimit = 255,
+    };
 
         public static InfineonDesc F12 = new InfineonDesc()
         {
@@ -24,6 +26,8 @@ namespace Infineon.Model
             PhaseCurrentMultiplier = 1.0 / 1.20,
             Type = "F12",
             FirmwareType = 3,
+            LVCMultiplier = 1.0 / 3.285 * 1.5,
+            VoltageRangeLimit = 219,
         };
 
         public static InfineonDesc F18 = new InfineonDesc()
@@ -32,14 +36,17 @@ namespace Infineon.Model
             PhaseCurrentMultiplier = 1.0 / 0.53,
             Type = "F18",
             FirmwareType = 5,
+            LVCMultiplier = 1.0 / 3.285 * 1.5,
+            VoltageRangeLimit = 219,
         };
 
         public string Type { get; private set; }
         public byte FirmwareType { get; private set; }
         public double BatteryCurrentMultiplier { get; private set; }
         public double PhaseCurrentMultiplier { get; private set; }
+        public double LVCMultiplier { get; private set; }
+        public int VoltageRangeLimit { get; private set; }
 
-        public double LVCMultiplier => 1.0 / 3.285;
         public double SLMultiplier => 1.0 / 0.96;
         public double SpeedMultiplier => 1.0 / 0.8;
         public double TimeMultiplier => 1.0 / 10;
