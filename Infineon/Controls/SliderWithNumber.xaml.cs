@@ -12,6 +12,7 @@ namespace Infineon.Controls
     public partial class SliderWithNumber: UserControl
     {
         private double multiplier = 1;
+        private double offset = 0;
         private bool muted;
 
         private Action<int> valueChanged;
@@ -27,10 +28,10 @@ namespace Infineon.Controls
             tbValue.TextChanged += OnTextChanged;
             tbValue.LostFocus += OnLostFocus;
 
-            Setup( "Unnamed", 0, 10, 1, 0, null );
+            Setup( "Unnamed", 0, 10, 1, 0, 0, null );
         }
 
-        public void Setup( string name, int min, int max, double multiplier, int value, Action<int> setValueCb )
+        public void Setup( string name, int min, int max, double multiplier, double offset, int value, Action<int> setValueCb )
         {
             tbName.Text = name;
             slValue.Minimum = min;
@@ -39,6 +40,7 @@ namespace Infineon.Controls
             slValue.IsSnapToTickEnabled = true;
 
             this.multiplier = multiplier;
+            this.offset = offset;
             valueChanged = setValueCb;
 
             // Update text
@@ -47,7 +49,7 @@ namespace Infineon.Controls
 
         public int Value
         {
-            get { return (int) slValue.Value; }
+            get { return (int)slValue.Value; }
             set { slValue.Value = value; }
         }
 
@@ -65,7 +67,7 @@ namespace Infineon.Controls
 
             muted = true;
 
-            tbValue.Text = $"{slValue.Value * multiplier:0.0}";
+            tbValue.Text = $"{slValue.Value * multiplier + offset:0.0}";
             valueChanged?.Invoke( (int)slValue.Value );
 
             muted = false;
@@ -81,7 +83,7 @@ namespace Infineon.Controls
             double d;
             if ( double.TryParse( tbValue.Text, NumberStyles.Any, CultureInfo.CurrentCulture, out d ) )
             {
-                slValue.Value = (int) Math.Round( d / multiplier );
+                slValue.Value = (int)Math.Round( ( d - offset ) / multiplier );
                 valueChanged?.Invoke( (int)slValue.Value );
             }
 
@@ -93,8 +95,8 @@ namespace Infineon.Controls
             double d;
             if ( double.TryParse( tbValue.Text, NumberStyles.Any, CultureInfo.CurrentCulture, out d ) )
             {
-                slValue.Value = (int) Math.Round( d / multiplier );
-                tbValue.Text = $"{slValue.Value * multiplier:0.0}";
+                slValue.Value = (int)Math.Round( ( d - offset ) / multiplier );
+                tbValue.Text = $"{slValue.Value * multiplier + offset:0.0}";
                 valueChanged?.Invoke( (int)slValue.Value );
             }
         }
