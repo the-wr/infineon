@@ -18,7 +18,8 @@ namespace Infineon.Model
             FirmwareType = 1,
             LVCMultiplier = 1.0 / 3.285,
             LVCMaxMultiplier = 1.0 / 3.285,
-            VoltageRangeLimit = 255,
+            VoltageRangeLimitMax = 255,
+            VoltageRangeLimitMin = 0,
     };
 
         public static InfineonDesc F12 = new InfineonDesc()
@@ -30,7 +31,9 @@ namespace Infineon.Model
             LVCMultiplier = 1.0 / 3.285 * 1.5,
             LVCMaxMultiplier = 0.4592,
             LVCMaxOffset = 2.8232,
-            VoltageRangeLimit = 212,
+            VoltageRangeLimitMax = 212,
+            VoltageRangeLimitMin = 70,
+            MinVoltageRangeLimitMin = 77
         };
 
         public static InfineonDesc F18 = new InfineonDesc()
@@ -42,7 +45,9 @@ namespace Infineon.Model
             LVCMultiplier = 1.0 / 3.285 * 1.5,
             LVCMaxMultiplier = 0.4592,
             LVCMaxOffset = 2.8232,
-            VoltageRangeLimit = 212,
+            VoltageRangeLimitMax = 212,
+            VoltageRangeLimitMin = 70,
+            MinVoltageRangeLimitMin = 77
         };
 
         public string Type { get; private set; }
@@ -52,7 +57,9 @@ namespace Infineon.Model
         public double LVCMultiplier { get; private set; }
         public double LVCMaxMultiplier { get; private set; }
         public double LVCMaxOffset { get; private set; }
-        public int VoltageRangeLimit { get; private set; }
+        public int VoltageRangeLimitMax { get; private set; }
+        public int VoltageRangeLimitMin { get; private set; }
+        public int MinVoltageRangeLimitMin { get; private set; }
 
         public double SLMultiplier => 1.0 / 0.96;
         public double SpeedMultiplier => 1.0 / 0.8;

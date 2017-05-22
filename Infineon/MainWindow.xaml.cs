@@ -208,12 +208,12 @@ namespace Infineon
             slSpeed4.Setup( l.GetString( 18 ), 24, 95, data.Desc.SpeedMultiplier, 0, data.Speed4Precentage, v => data.Speed4Precentage = v );
             slSpeed4Current.Setup( l.GetString( 36 ), 0, 141, data.Desc.CurrentMultiplierPercent, 0, data.Speed4CurrentPrecentage, v => data.Speed4CurrentPrecentage = v );
 
-            slMinVoltage.Setup( l.GetString( 19 ), 0, data.Desc.VoltageRangeLimit, data.Desc.LVCMultiplier, 0, data.MinVoltage, v => data.MinVoltage = v );
-            slMinVoltageTolerance.Setup( l.GetString( 20 ), 0, data.Desc.VoltageRangeLimit, data.Desc.LVCMultiplier, 0, data.MinVoltageTolerance, v => data.MinVoltageTolerance = v );
+            slMinVoltage.Setup( l.GetString( 19 ), data.Desc.MinVoltageRangeLimitMin, data.Desc.VoltageRangeLimitMax, data.Desc.LVCMultiplier, 0, data.MinVoltage, v => data.MinVoltage = v );
+            slMinVoltageTolerance.Setup( l.GetString( 20 ), 0, data.Desc.VoltageRangeLimitMax, data.Desc.LVCMultiplier, 0, data.MinVoltageTolerance, v => data.MinVoltageTolerance = v );
 
             cbRegenEnabled.Setup( l.GetString( 21 ), data.RegenEnabled, v => data.RegenEnabled = v );
             slRegenStr.Setup( l.GetString( 22 ), 0, 200, 1, 0, data.RegenStrength, v => data.RegenStrength = v );
-            slMaxVoltage.Setup( l.GetString( 23 ), 0, data.Desc.VoltageRangeLimit, data.Desc.LVCMaxMultiplier, data.Desc.LVCMaxOffset, data.RegenMaxVoltage, v => data.RegenMaxVoltage = v );
+            slMaxVoltage.Setup( l.GetString( 23 ), data.Desc.VoltageRangeLimitMin, data.Desc.VoltageRangeLimitMax, data.Desc.LVCMaxMultiplier, data.Desc.LVCMaxOffset, data.RegenMaxVoltage, v => data.RegenMaxVoltage = v );
 
             slPasMaxSpeed.Setup( l.GetString( 24 ), 0, 128, data.Desc.PASSpeedMultiplier, 0, data.PASMaxSpeed, v => data.PASMaxSpeed = v );
             slPasPulses.Setup( l.GetString( 25 ), 1, 15, 1, 0, data.PASPulsesToSkip, v => data.PASPulsesToSkip = v );
