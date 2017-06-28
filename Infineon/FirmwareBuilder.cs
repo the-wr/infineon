@@ -8,7 +8,7 @@ namespace Infineon
 
     public class FirmwareBuilder
     {
-        private static byte[] defaultData = new byte[]
+        private static byte[] defaultInf4Data = new byte[]
         {
             0x02, 0x0f, 0x44, 0x6d, 0x64, 0x03, 0x5c, 0x00, 0x18, 0x40, 0x53,
             0x05, // 11
@@ -26,10 +26,18 @@ namespace Infineon
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x39,
         };
 
-        public static byte[] BuildFirmware( Data data )
+        public static byte[] BuildFirmware( IData data )
         {
-            var buffer = new byte[defaultData.Length];
-            Array.Copy( defaultData, buffer, defaultData.Length - 1 );  // Don't need last byte
+            if ( data is Inf4Data )
+                return BuildInf4Firmware( data as Inf4Data );
+
+            return null;
+        }
+
+        public static byte[] BuildInf4Firmware( Inf4Data data )
+        {
+            var buffer = new byte[defaultInf4Data.Length];
+            Array.Copy( defaultInf4Data, buffer, defaultInf4Data.Length - 1 );  // Don't need last byte
 
             // TODO
 
@@ -39,9 +47,9 @@ namespace Infineon
             buffer[5] = (byte)data.MinVoltageTolerance;
             //buffer[6] = 96;
             buffer[7] = (byte)( data.ThreePosMode - 1 );
-            buffer[8] = (byte)data.Speed1Precentage;
-            buffer[9] = (byte)data.Speed2Precentage;
-            buffer[10] = (byte)data.Speed3Precentage;
+            buffer[8] = (byte)data.Speed1Percentage;
+            buffer[9] = (byte)data.Speed2Percentage;
+            buffer[10] = (byte)data.Speed3Percentage;
             //buffer[11] = 0;
             //buffer[12] = 0;
             buffer[13] = data.OnePedalMode ? (byte)0 : (byte)1;
@@ -49,12 +57,12 @@ namespace Infineon
             buffer[15] = (byte)data.RegenStrength;
             buffer[16] = (byte)data.ReverseSpeed;
             buffer[17] = (byte)data.RegenMaxVoltage;
-            //buffer[18] = 0;
+            //buffer[18] = 0;   
             buffer[19] = data.ThrottleProtection ? (byte)1 : (byte)0;
             //buffer[20] = 0;
             buffer[21] = (byte)data.PASPulsesToSkip;
             buffer[22] = 1;
-            buffer[23] = (byte)data.Speed4Precentage;
+            buffer[23] = (byte)data.Speed4Percentage;
             buffer[24] = data.Desc.FirmwareType;
             //buffer[25] = 0;
             buffer[26] = (byte)data.PASMaxSpeed;
@@ -69,10 +77,10 @@ namespace Infineon
             //buffer[34] = 0;
             //buffer[35] = 0;
             //buffer[36] = 0;
-            buffer[37] = (byte)data.Speed1CurrentPrecentage;
-            buffer[38] = (byte)data.Speed2CurrentPrecentage;
-            buffer[39] = (byte)data.Speed3CurrentPrecentage;
-            buffer[40] = (byte)data.Speed4CurrentPrecentage;
+            buffer[37] = (byte)data.Speed1CurrentPercentage;
+            buffer[38] = (byte)data.Speed2CurrentPercentage;
+            buffer[39] = (byte)data.Speed3CurrentPercentage;
+            buffer[40] = (byte)data.Speed4CurrentPercentage;
             //buffer[41] = 0;
             //buffer[42] = 0;
             //buffer[43] = 0;

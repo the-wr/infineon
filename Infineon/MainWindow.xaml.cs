@@ -6,23 +6,28 @@ using System.Linq;
 using System.Windows;
 using System.Xml.Serialization;
 using Infineon.Model;
+using System.Collections.Generic;
+using System.Windows.Controls;
+using Infineon.UI;
 
 namespace Infineon
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow: Window
+    public partial class MainWindow : Window
     {
         private Config config;
-        private Data data;
+
+        private IControllerDesc currentDesc;
+        private IData data;
+        private IUIControls controls;
 
         private PresetsPicker presetsPicker;
         private Uploader uploader;
         private HelpWindow helpWindow;
 
-        private bool muted;
         private string lastHelpKey = "Index";
+        private bool mutePresetPicker;
+
+        private List<IControllerDesc> controllerDescs = new List<IControllerDesc>();
 
         public MainWindow()
         {
@@ -30,15 +35,7 @@ namespace Infineon
 
             helpWindow = new HelpWindow( wb );
 
-            tbCont6.Checked += OnTbControllerTypeChecked;
-            tbCont12.Checked += OnTbControllerTypeChecked;
-            tbCont18.Checked += OnTbControllerTypeChecked;
-
-            tbCont6.Unchecked += OnTbControllerTypeChecked;
-            tbCont12.Unchecked += OnTbControllerTypeChecked;
-            tbCont18.Unchecked += OnTbControllerTypeChecked;
-
-            Init();
+            cbControllerType.SelectionChanged += OnCbControllerTypeSelectionChanged;
 
             btnSave.Click += OnSaveClicked;
             btnSaveAs.Click += OnSaveAsClicked;
@@ -49,6 +46,22 @@ namespace Infineon
 
             Closing += delegate { SaveConfig(); uploader.Dispose(); };
 
+            controllerDescs.Add( new ControllerDesc( "F6", "Infineon 4 (6-FET)",
+                ( data ) => { return new Inf4Controls( data ); },
+                () => { return new Inf4Data( InfineonDesc.F6 ); },
+                (data) => { ( data as Inf4Data ).Desc = InfineonDesc.F6; } ) );
+
+            controllerDescs.Add( new ControllerDesc( "F12", "Infineon 4 (12-FET)",
+                ( data ) => { return new Inf4Controls( data ); },
+                () => { return new Inf4Data( InfineonDesc.F12 ); },
+                ( data ) => { ( data as Inf4Data ).Desc = InfineonDesc.F12; } ) );
+
+            controllerDescs.Add( new ControllerDesc( "F18", "Infineon 4 (18-FET)",
+                ( data ) => { return new Inf4Controls( data ); },
+                () => { return new Inf4Data( InfineonDesc.F18 ); },
+                ( data ) => { ( data as Inf4Data ).Desc = InfineonDesc.F6; } ) );
+
+            Init();
         }
 
         private void Init()
@@ -66,13 +79,6 @@ namespace Infineon
             if ( config == null )
                 config = new Config() { LastControllerType = "F6" };
 
-            if ( config.LastControllerType == "F12" )
-                data = LoadDefaultData( InfineonDesc.F12 );
-            else if ( config.LastControllerType == "F18" )
-                data = LoadDefaultData( InfineonDesc.F18 );
-            else
-                data = LoadDefaultData( InfineonDesc.F6 );
-
             cbPort.Text = config.LastPort;
 
             foreach ( var lang in Localization.Instance.Languages )
@@ -81,24 +87,31 @@ namespace Infineon
             cbLanguages.SelectionChanged += OnLanguageChanged;
             cbLanguages.SelectedItem = Localization.Instance.Languages.Contains( config.Language ) ? config.Language : "English";
 
+            foreach ( var desc in controllerDescs )
+            {
+                var item = new ComboBoxItem() { Content = desc.Name, Tag = desc };
+                cbControllerType.Items.Add( item );
+
+                if ( config.LastControllerType == desc.Id )
+                    cbControllerType.SelectedItem = item;
+            }
+
+            if ( cbControllerType.SelectedItem == null && cbControllerType.Items.Count > 0 )
+                cbControllerType.SelectedItem = cbControllerType.Items[0];
 
             presetsPicker = new PresetsPicker();
             gridPresets.Children.Add( presetsPicker );
             presetsPicker.PresetSelected += OnPresetSelected;
             presetsPicker.Setup( config.LastControllerType, config.LastPreset );
 
-            muted = true;
-            UpdateControllerTypeButtons();
-            muted = false;
-
             uploader = new Uploader();
             uploader.OnSuccess += delegate
             {
                 imgError.Visibility = Visibility.Collapsed;
                 imgOk.Visibility = Visibility.Visible;
-                tbUploadMessage.Text = Localization.Instance.GetString(9);
+                tbUploadMessage.Text = Localization.Instance.GetString( 9 );
             };
-            uploader.OnError += delegate(string error)
+            uploader.OnError += delegate ( string error )
             {
                 imgError.Visibility = Visibility.Visible;
                 imgOk.Visibility = Visibility.Collapsed;
@@ -122,113 +135,33 @@ namespace Infineon
             BindHelpToControl( btnDefault, "ResetToDefault" );
             BindHelpToControl( btnSave, "SavePreset" );
             BindHelpToControl( btnSaveAs, "SavePreset" );
-
-            BindHelpToControl( slBatteryCurrent, "BatteryCurrent" );
-            BindHelpToControl( slPhaseCurrent, "PhaseCurrent" );
-
-            BindHelpToControl( slSpeed1, "Speed1" );
-            BindHelpToControl( slSpeed2, "Speed2" );
-            BindHelpToControl( slSpeed3, "Speed3" );
-            BindHelpToControl( slSpeed4, "Speed4" );
-
-            BindHelpToControl( slSpeed1Current, "Speed1Current" );
-            BindHelpToControl( slSpeed2Current, "Speed2Current" );
-            BindHelpToControl( slSpeed3Current, "Speed3Current" );
-            BindHelpToControl( slSpeed4Current, "Speed4Current" );
-
-            BindHelpToControl( slMinVoltage, "MinVoltage" );
-            BindHelpToControl( slMinVoltageTolerance, "VoltageTolerance" );
-
-            BindHelpToControl( cbRegenEnabled, "RegenEnabled" );
-            BindHelpToControl( slRegenStr, "RegenStrength" );
-            BindHelpToControl( slMaxVoltage, "MaxVoltage" );
-
-            BindHelpToControl( slPasMaxSpeed, "PasMaxSpeed" );
-            BindHelpToControl( slPasPulses, "PasPulses" );
-
-            BindHelpToControl( sl3PosMode, "3PosMode" );
-            BindHelpToControl( slReverseSpeed, "ReverseSpeed" );
-            BindHelpToControl( cbOnePedalMode, "OnePedalMode" );
-            BindHelpToControl( cbThrotteProtection, "ThrottleProtection" );
-            BindHelpToControl( cbHallsAngle, "HallsAngle" );
         }
 
-        private Data LoadDefaultData( InfineonDesc desc )
+        private void SetControllerType( IControllerDesc desc, IData newData = null )
         {
-            return new Data
+            currentDesc = desc;
+            data = newData;
+
+            if ( data == null )
+                data = desc.CreateData();
+
+            controls = desc.CreateControls( data );
+            
+            gridControls.Children.Clear();
+            gridControls.Children.Add( controls.FrameworkElement );
+
+            controls.ShowHelp += ( helpKey ) =>
             {
-                Type = desc.Type,
-                Desc = desc,
-                BatteryCurrent = 128,
-                PhaseCurrent = 128,
-
-                OnePedalMode = false,
-                HallsAngle = true,
-                MinVoltageTolerance = 2,
-                ThreePosMode = 1,
-                ThrottleProtection = true,
-                PASMaxSpeed = 27,
-                PASPulsesToSkip = 5,
-                RegenEnabled = true,
-                MinVoltage = 84,
-                Speed1Precentage = 24,
-                Speed1CurrentPrecentage = 38,
-                Speed2Precentage = 80,
-                Speed2CurrentPrecentage = 128,
-                Speed3Precentage = 104,
-                Speed3CurrentPrecentage = 141,
-                Speed4Precentage = 24,
-                Speed4CurrentPrecentage = 38,
-                RegenMaxVoltage = 168,
-                RegenStrength = 50,
-                ReverseSpeed = 16
+                lastHelpKey = helpKey;
+                helpWindow.ShowHelp( helpKey );
             };
-        }
 
-        private void UpdateControllerTypeButtons()
-        {
-            tbCont6.IsChecked = data.Desc == InfineonDesc.F6;
-            tbCont12.IsChecked = data.Desc == InfineonDesc.F12;
-            tbCont18.IsChecked = data.Desc == InfineonDesc.F18;
-        }
-
-        private void UpdateControls()
-        {
-            var l = Localization.Instance;
-
-            slBatteryCurrent.Setup( l.GetString( 13 ), 0, 255, data.Desc.BatteryCurrentMultiplier, 0, data.BatteryCurrent, v => data.BatteryCurrent = v );
-            slPhaseCurrent.Setup( l.GetString( 14 ), 0, 255, data.Desc.PhaseCurrentMultiplier, 0, data.PhaseCurrent, v => data.PhaseCurrent = v );
-
-            slSpeed1.Setup( l.GetString( 15 ), 0, 104, data.Desc.SpeedMultiplier, 0, data.Speed1Precentage, v => data.Speed1Precentage = v );
-            slSpeed1Current.Setup( l.GetString( 33 ), 0, 141, data.Desc.CurrentMultiplierPercent, 0, data.Speed1CurrentPrecentage, v => data.Speed1CurrentPrecentage = v );
-            slSpeed2.Setup( l.GetString( 16 ), 0, 104, data.Desc.SpeedMultiplier, 0, data.Speed2Precentage, v => data.Speed2Precentage = v );
-            slSpeed2Current.Setup( l.GetString( 34 ), 0, 141, data.Desc.CurrentMultiplierPercent, 0, data.Speed2CurrentPrecentage, v => data.Speed2CurrentPrecentage = v );
-            slSpeed3.Setup( l.GetString( 17 ), 0, 104, data.Desc.SpeedMultiplier, 0, data.Speed3Precentage, v => data.Speed3Precentage = v );
-            slSpeed3Current.Setup( l.GetString( 35 ), 0, 141, data.Desc.CurrentMultiplierPercent, 0, data.Speed3CurrentPrecentage, v => data.Speed3CurrentPrecentage = v );
-            slSpeed4.Setup( l.GetString( 18 ), 24, 95, data.Desc.SpeedMultiplier, 0, data.Speed4Precentage, v => data.Speed4Precentage = v );
-            slSpeed4Current.Setup( l.GetString( 36 ), 0, 141, data.Desc.CurrentMultiplierPercent, 0, data.Speed4CurrentPrecentage, v => data.Speed4CurrentPrecentage = v );
-
-            slMinVoltage.Setup( l.GetString( 19 ), data.Desc.MinVoltageRangeLimitMin, data.Desc.VoltageRangeLimitMax, data.Desc.LVCMultiplier, 0, data.MinVoltage, v => data.MinVoltage = v );
-            slMinVoltageTolerance.Setup( l.GetString( 20 ), 0, data.Desc.VoltageRangeLimitMax, data.Desc.LVCMultiplier, 0, data.MinVoltageTolerance, v => data.MinVoltageTolerance = v );
-
-            cbRegenEnabled.Setup( l.GetString( 21 ), data.RegenEnabled, v => data.RegenEnabled = v );
-            slRegenStr.Setup( l.GetString( 22 ), 0, 200, 1, 0, data.RegenStrength, v => data.RegenStrength = v );
-            slMaxVoltage.Setup( l.GetString( 23 ), data.Desc.VoltageRangeLimitMin, data.Desc.VoltageRangeLimitMax, data.Desc.LVCMaxMultiplier, data.Desc.LVCMaxOffset, data.RegenMaxVoltage, v => data.RegenMaxVoltage = v );
-
-            slPasMaxSpeed.Setup( l.GetString( 24 ), 0, 128, data.Desc.PASSpeedMultiplier, 0, data.PASMaxSpeed, v => data.PASMaxSpeed = v );
-            slPasPulses.Setup( l.GetString( 25 ), 1, 15, 1, 0, data.PASPulsesToSkip, v => data.PASPulsesToSkip = v );
-
-            sl3PosMode.Setup( l.GetString( 26 ), 1, 4, 1, 0, data.ThreePosMode, v => data.ThreePosMode = v );
-            slReverseSpeed.Setup( l.GetString( 27 ), 0, 128, data.Desc.ReverseSpeedMultiplier, 0, data.ReverseSpeed, v => data.ReverseSpeed = v );
-            cbOnePedalMode.Setup( l.GetString( 28 ), data.OnePedalMode, v => data.OnePedalMode = v );
-            cbThrotteProtection.Setup( l.GetString( 29 ), data.ThrottleProtection, v => data.ThrottleProtection = v );
-            cbHallsAngle.Setup( l.GetString( 30 ), data.HallsAngle, v => data.HallsAngle = v );
+            if ( !mutePresetPicker && presetsPicker != null )
+                presetsPicker.Setup( data.Type, config.LastPreset );
         }
 
         private void SaveConfig()
         {
-            config.LastControllerType = data.Desc.Type;
-
             try
             {
                 using ( var writer = new StreamWriter( "Config.xml" ) )
@@ -247,16 +180,19 @@ namespace Infineon
                 {
                     using ( var reader = new StreamReader( "Presets\\" + shortName + ".xml" ) )
                     {
-                        data = new XmlSerializer( typeof (Data) ).Deserialize( reader ) as Data;
-                        if ( data == null )
-                            data = LoadDefaultData( InfineonDesc.F6 ); // todo
+                        var dataDs = new XmlSerializer( typeof (DataDS) ).Deserialize( reader ) as DataDS;
+                        if ( dataDs == null )
+                            return;
 
-                        if ( data.Type == "F6" )
-                            data.Desc = InfineonDesc.F6;
-                        if ( data.Type == "F12" )
-                            data.Desc = InfineonDesc.F12;
-                        if ( data.Type == "F18" )
-                            data.Desc = InfineonDesc.F18;
+                        var desc = controllerDescs.FirstOrDefault( ( d ) => d.Id == dataDs.Data.Type );
+                        if ( desc == null )
+                            return;
+
+                        desc.PostLoad( dataDs.Data );
+
+                        mutePresetPicker = true;
+                        SetControllerType( desc, dataDs.Data );
+                        mutePresetPicker = false;
                     }
 
                 }
@@ -265,38 +201,18 @@ namespace Infineon
                     MessageBox.Show( "Can't read preset file: " + shortName, "Sum Ting Wong" );
                 }
             }
-            else
-            {
-                data = LoadDefaultData( data.Desc );
-            }
-
-            config.LastControllerType = data.Desc.Type;
+         
+            config.LastControllerType = data.Type;
             config.LastPreset = shortName;
-
-            UpdateControls();
         }
 
         // -----
 
-        private void OnTbControllerTypeChecked( object sender, RoutedEventArgs e )
+        private void OnCbControllerTypeSelectionChanged( object sender, SelectionChangedEventArgs e )
         {
-            if ( muted )
-                return;
-
-            if ( ReferenceEquals( sender, tbCont6 ) )
-                data.Desc = InfineonDesc.F6;
-            if ( ReferenceEquals( sender, tbCont12 ) )
-                data.Desc = InfineonDesc.F12;
-            if ( ReferenceEquals( sender, tbCont18 ) )
-                data.Desc = InfineonDesc.F18;
-
-            presetsPicker.Setup( data.Desc.Type, string.Empty );
-
-            muted = true;
-            UpdateControllerTypeButtons();
-            muted = false;
-
-            UpdateControls();
+            var item = cbControllerType.SelectedItem;
+            if ( item is ComboBoxItem )
+                SetControllerType( ( item as ComboBoxItem ).Tag as IControllerDesc );
         }
 
         private void OnSaveClicked( object sender, RoutedEventArgs e )
@@ -308,7 +224,7 @@ namespace Infineon
             }
 
             using ( var writer = new StreamWriter( "Presets\\" + config.LastPreset + ".xml" ) )
-                new XmlSerializer( typeof( Data ) ).Serialize( writer, data );
+                new XmlSerializer( typeof( DataDS ) ).Serialize( writer, new DataDS { Data = data } );
 
             MessageBox.Show( Localization.Instance.GetString( 32 ) + config.LastPreset );
         }
@@ -329,11 +245,10 @@ namespace Infineon
                 var result = dlg.ShowDialog();
                 if ( result == true )
                 {
-                    // Save document
                     string filename = dlg.FileName;
 
                     using ( var writer = new StreamWriter( filename ) )
-                        new XmlSerializer( typeof (Data) ).Serialize( writer, data );
+                        new XmlSerializer( typeof( DataDS ) ).Serialize( writer, new DataDS { Data = data } );
 
                     config.LastPreset = filename.Split( '\\' ).Last().Replace( ".xml", "" );
                 }
@@ -350,8 +265,9 @@ namespace Infineon
 
         private void OnDefaultClicked( object sender, RoutedEventArgs e )
         {
-            data = LoadDefaultData( data.Desc );
-            UpdateControls();
+            mutePresetPicker = true;
+            SetControllerType( currentDesc );
+            mutePresetPicker = false;
         }
 
         private void OnBtnUploadClicked( object sender, RoutedEventArgs e )
@@ -371,11 +287,11 @@ namespace Infineon
             var ports = SerialPort.GetPortNames().ToList();
             ports.Sort();
 
-            foreach ( var port in ports )   
+            foreach ( var port in ports )
                 cbPort.Items.Add( port );
         }
 
-        private void OnLanguageChanged( object sender, System.Windows.Controls.SelectionChangedEventArgs e )
+        private void OnLanguageChanged( object sender, SelectionChangedEventArgs e )
         {
             var l = Localization.Instance;
             l.SetLanguage( cbLanguages.SelectedItem.ToString() );
@@ -392,36 +308,8 @@ namespace Infineon
             tbPort.Text = l.GetString( 7 );
             btnUpload.Content = l.GetString( 8 );
 
-            slBatteryCurrent.SetCaption( l.GetString( 13 ) );//( "Battery current"
-            slPhaseCurrent.SetCaption( l.GetString( 14 ) );//( "Phase current"
-
-            slSpeed1.SetCaption( l.GetString( 15 ) );//( "Speed 1 percent"
-            slSpeed1Current.SetCaption( l.GetString( 33 ) );
-
-            slSpeed2.SetCaption( l.GetString( 16 ) );//( "Speed 2 percent"
-            slSpeed2Current.SetCaption( l.GetString( 34 ) );//( "Speed 1 percent"
-
-            slSpeed3.SetCaption( l.GetString( 17 ) );//( "Speed 3 percent"
-            slSpeed3Current.SetCaption( l.GetString( 35 ) );//( "Speed 1 percent"
-
-            slSpeed4.SetCaption( l.GetString( 18 ) );//( "Speed 4 percent"
-            slSpeed4Current.SetCaption( l.GetString( 36 ) );//( "Speed 1 percent"
-
-            slMinVoltage.SetCaption( l.GetString( 19 ) );//( "Min voltage"
-            slMinVoltageTolerance.SetCaption( l.GetString( 20 ) );//( "Tolerance"
-
-            cbRegenEnabled.SetCaption( l.GetString( 21 ) );//( "Regen enabled"
-            slRegenStr.SetCaption( l.GetString( 22 ) );//( "Regen strength"
-            slMaxVoltage.SetCaption( l.GetString( 23 ) );//( "Regen max voltage"
-
-            slPasMaxSpeed.SetCaption( l.GetString( 24 ) );//( "PAS max speed"
-            slPasPulses.SetCaption( l.GetString( 25 ) );//( "Pas pulses to skip"
-
-            sl3PosMode.SetCaption( l.GetString( 26 ) );//( "Speed switch mode"
-            slReverseSpeed.SetCaption( l.GetString( 27 ) );//( "Reverse speed"
-            cbOnePedalMode.SetCaption( l.GetString( 28 ) );//( "One-pedal mode"
-            cbThrotteProtection.SetCaption( l.GetString( 29 ) );//( "Throttle protection"
-            cbHallsAngle.SetCaption( l.GetString( 30 ) );//( "Halls angle"
+            if ( controls != null )
+                controls.UpdateLanguage();
 
             helpWindow.ShowHelp( lastHelpKey );
         }

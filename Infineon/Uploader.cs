@@ -21,6 +21,9 @@ namespace Infineon
 
             dispatcher = Dispatcher.CurrentDispatcher;
 
+            if ( buffer == null )
+                return;
+
             thread = new Thread( () => DoUpload( portName, buffer ) );
             thread.Start();
         }

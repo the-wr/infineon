@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Infineon"
         xmlns:controls="clr-namespace:Infineon.Controls"
         mc:Ignorable="d"
-        Title="E4BIKE CPT R3" Height="730" Width="1040" WindowStartupLocation="CenterScreen">
+        Title="E4BIKE Controller Programming Tool (R4)" Height="730" Width="1040" WindowStartupLocation="CenterScreen">
     <DockPanel SnapsToDevicePixels="True">
 
         <!--
@@ -26,9 +26,7 @@
 
             <TextBlock Name="tbController" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0,0,10,0">Controller:</TextBlock>
             <StackPanel Name="spControllerType" Orientation="Horizontal" DockPanel.Dock="Left">
-                <ToggleButton Name="tbCont6" Width="60">6 FET v4</ToggleButton>
-                <ToggleButton Name="tbCont12" Width="60">12FET v4</ToggleButton>
-                <ToggleButton Name="tbCont18" Width="60">18FET v4</ToggleButton>
+                <ComboBox Name="cbControllerType" Width="150"></ComboBox>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
@@ -57,6 +55,7 @@
         </DockPanel>
 
         <Grid Margin="30,50,30,30">
+            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="40"/>
@@ -65,41 +64,8 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Orientation="Vertical">
-                <controls:SliderWithNumber x:Name="slBatteryCurrent" Margin="0,3"></controls:SliderWithNumber>
-                <controls:SliderWithNumber x:Name="slPhaseCurrent" Margin="0,3"></controls:SliderWithNumber>
-
-                <controls:SliderWithNumber x:Name="slSpeed1" Margin="0,33,0,3"></controls:SliderWithNumber>
-                <controls:SliderWithNumber x:Name="slSpeed1Current" Margin="0,3"></controls:SliderWithNumber>
-
-                <controls:SliderWithNumber x:Name="slSpeed2" Margin="0,33,0,3"></controls:SliderWithNumber>
-                <controls:SliderWithNumber x:Name="slSpeed2Current" Margin="0,3"></controls:SliderWithNumber>
-                
-                <controls:SliderWithNumber x:Name="slSpeed3" Margin="0,33,0,3"></controls:SliderWithNumber>
-                <controls:SliderWithNumber x:Name="slSpeed3Current" Margin="0,3"></controls:SliderWithNumber>
-                
-                <controls:SliderWithNumber x:Name="slSpeed4" Margin="0,33,0,3"></controls:SliderWithNumber>
-                <controls:SliderWithNumber x:Name="slSpeed4Current" Margin="0,3"></controls:SliderWithNumber>
-            </StackPanel>
-
-            <StackPanel Orientation="Vertical" Grid.Column="2">
-                <controls:SliderWithNumber x:Name="slMinVoltage" Margin="0,3"></controls:SliderWithNumber>
-                <controls:SliderWithNumber x:Name="slMaxVoltage" Margin="0,3"></controls:SliderWithNumber>
-                <controls:SliderWithNumber x:Name="slMinVoltageTolerance" Margin="0,3"></controls:SliderWithNumber>
-                
-                <controls:CheckBoxControl x:Name="cbRegenEnabled" Margin="0,33,0,3"></controls:CheckBoxControl>
-                <controls:SliderWithNumber x:Name="slRegenStr" Margin="0,3"></controls:SliderWithNumber>
-
-                <controls:SliderWithNumber x:Name="slPasMaxSpeed" Margin="0,33,0,3"></controls:SliderWithNumber>
-                <controls:SliderWithNumber x:Name="slPasPulses" Margin="0,3"></controls:SliderWithNumber>
-
-                <controls:SliderWithNumber x:Name="sl3PosMode" Margin="0,33,0,3"></controls:SliderWithNumber>
-                <controls:SliderWithNumber x:Name="slReverseSpeed" Margin="0,3"></controls:SliderWithNumber>
-                <controls:CheckBoxControl x:Name="cbOnePedalMode" Margin="0,3"></controls:CheckBoxControl>
-                <controls:CheckBoxControl x:Name="cbThrotteProtection" Margin="0,3"></controls:CheckBoxControl>
-                <controls:CheckBoxControl x:Name="cbHallsAngle" Margin="0,3"></controls:CheckBoxControl>
-            </StackPanel>
-
+            <Grid Name="gridControls" Grid.ColumnSpan="3"/>
+            
             <WebBrowser Name="wb" Grid.Column="4"></WebBrowser>
         </Grid>
     </DockPanel>

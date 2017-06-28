@@ -13,9 +13,10 @@ namespace Infineon
     /// <summary>
     /// Interaction logic for PresetsPicker.xaml
     /// </summary>
-    public partial class PresetsPicker: UserControl
+    public partial class PresetsPicker : UserControl
     {
         public event Action<string> PresetSelected;
+
         private List<ToggleButton> buttons = new List<ToggleButton>();
         private bool muted;
 
@@ -30,15 +31,15 @@ namespace Infineon
             buttons.Clear();
 
             string presetToUse = string.Empty;
-            try
+            var files = Directory.GetFileSystemEntries( "Presets", "*.xml" );
+            foreach ( var file in files )
             {
-                var files = Directory.GetFileSystemEntries( "Presets", "*.xml" );
-                foreach ( var file in files )
+                try
                 {
                     using ( var reader = new StreamReader( file ) )
                     {
-                        var data = new XmlSerializer( typeof( Data ) ).Deserialize( reader ) as Data;
-                        if ( data != null && data.Type == controllerType )
+                        var data = new XmlSerializer( typeof( DataDS ) ).Deserialize( reader ) as DataDS;
+                        if ( data != null && data.Data != null && data.Data.Type == controllerType )
                         {
                             var shortName = file.Split( '\\' ).Last().Replace( ".xml", "" );
                             var btn = new ToggleButton { Content = shortName, Tag = shortName, MinWidth = 40 };
@@ -56,9 +57,9 @@ namespace Infineon
                         }
                     }
                 }
-            }
-            catch ( Exception ex )
-            {
+                catch ( Exception ex )
+                {
+                }
             }
 
             PresetSelected?.Invoke( presetToUse );
@@ -80,7 +81,7 @@ namespace Infineon
             foreach ( var btn in buttons )
                 btn.IsChecked = btn == sender;
 
-            PresetSelected?.Invoke( (sender as ToggleButton).Tag.ToString() );
+            PresetSelected?.Invoke( ( sender as ToggleButton ).Tag.ToString() );
 
             muted = false;
         }

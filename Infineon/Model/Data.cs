@@ -1,11 +1,74 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
+using System.Windows;
 using System.Xml.Serialization;
 
 namespace Infineon.Model
 {
-    public interface IFirmware
+    [XmlInclude( typeof( Inf4Data ) )]
+    public class IData
     {
-        byte[] GetFirmwareBytes();
+        public virtual string Type { get; set; }
+    }
+
+    public class DataDS
+    {
+        public IData Data { get; set; }
+    }
+
+    public interface IUIControls
+    {
+        event Action<string> ShowHelp;
+
+        FrameworkElement FrameworkElement { get; }
+        void UpdateLanguage();
+    }
+
+    public interface IControllerDesc
+    {
+        string Id { get; }
+        string Name { get; }
+
+        IUIControls CreateControls( IData data );
+        IData CreateData();
+        void PostLoad( IData data );
+    }
+
+    public class ControllerDesc : IControllerDesc
+    {
+        private string id;
+        private string name;
+        private Func<IData, IUIControls> createControls;
+        private Func<IData> createData;
+        private Action<IData> postLoad;
+
+        public ControllerDesc( string id, string name, Func<IData, IUIControls> createControls,
+            Func<IData> createData, Action<IData> postLoad )
+        {
+            this.id = id;
+            this.name = name;
+            this.createControls = createControls;
+            this.createData = createData;
+            this.postLoad = postLoad;
+        }
+
+        public string Id => id;
+        public string Name => name;
+
+        public IUIControls CreateControls( IData data )
+        {
+            return createControls( data );
+        }
+
+        public IData CreateData()
+        {
+            return createData();
+        }
+
+        public void PostLoad( IData data )
+        {
+            postLoad( data );
+        }
     }
 
     public class InfineonDesc
@@ -20,7 +83,7 @@ namespace Infineon.Model
             LVCMaxMultiplier = 1.0 / 3.285,
             VoltageRangeLimitMax = 255,
             VoltageRangeLimitMin = 0,
-    };
+        };
 
         public static InfineonDesc F12 = new InfineonDesc()
         {
@@ -72,21 +135,21 @@ namespace Infineon.Model
         public double CurrentMultiplierPercent => 1.0 / 1.28;
     }
 
-    public class Data: IFirmware
+    public class Inf4Data : IData
     {
-        public string Type { get; set; }
+        public override string Type { get; set; }
 
         public int BatteryCurrent { get; set; }
         public int PhaseCurrent { get; set; }
 
-        public int Speed1Precentage { get; set; }
-        public int Speed1CurrentPrecentage { get; set; }
-        public int Speed2Precentage { get; set; }
-        public int Speed2CurrentPrecentage { get; set; }
-        public int Speed3Precentage { get; set; }
-        public int Speed3CurrentPrecentage { get; set; }
-        public int Speed4Precentage { get; set; }
-        public int Speed4CurrentPrecentage { get; set; }
+        public int Speed1Percentage { get; set; }
+        public int Speed1CurrentPercentage { get; set; }
+        public int Speed2Percentage { get; set; }
+        public int Speed2CurrentPercentage { get; set; }
+        public int Speed3Percentage { get; set; }
+        public int Speed3CurrentPercentage { get; set; }
+        public int Speed4Percentage { get; set; }
+        public int Speed4CurrentPercentage { get; set; }
 
         public int MinVoltage { get; set; }
         public int MinVoltageTolerance { get; set; }
@@ -107,9 +170,37 @@ namespace Infineon.Model
         [XmlIgnore]
         public InfineonDesc Desc { get; set; }
 
-        public byte[] GetFirmwareBytes()
+        public Inf4Data()
         {
-            return new byte[0];
+            BatteryCurrent = 128;
+            PhaseCurrent = 128;
+
+            OnePedalMode = false;
+            HallsAngle = true;
+            MinVoltageTolerance = 2;
+            ThreePosMode = 1;
+            ThrottleProtection = true;
+            PASMaxSpeed = 27;
+            PASPulsesToSkip = 5;
+            RegenEnabled = true;
+            MinVoltage = 84;
+            Speed1Percentage = 24;
+            Speed1CurrentPercentage = 38;
+            Speed2Percentage = 80;
+            Speed2CurrentPercentage = 128;
+            Speed3Percentage = 104;
+            Speed3CurrentPercentage = 141;
+            Speed4Percentage = 24;
+            Speed4CurrentPercentage = 38;
+            RegenMaxVoltage = 168;
+            RegenStrength = 50;
+            ReverseSpeed = 16;
+        }
+
+        public Inf4Data( InfineonDesc desc ) : this()
+        {
+            Type = desc.Type;
+            Desc = desc;
         }
     }
 }
