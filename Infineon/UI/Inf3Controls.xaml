@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Infineon.UI.Inf4Controls"
+﻿<UserControl x:Class="Infineon.UI.Inf3Controls"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -19,16 +19,9 @@
             <controls:SliderWithNumber x:Name="slPhaseCurrent" Margin="0,3"></controls:SliderWithNumber>
 
             <controls:SliderWithNumber x:Name="slSpeed1" Margin="0,33,0,3"></controls:SliderWithNumber>
-            <controls:SliderWithNumber x:Name="slSpeed1Current" Margin="0,3"></controls:SliderWithNumber>
-
-            <controls:SliderWithNumber x:Name="slSpeed2" Margin="0,33,0,3"></controls:SliderWithNumber>
-            <controls:SliderWithNumber x:Name="slSpeed2Current" Margin="0,3"></controls:SliderWithNumber>
-
-            <controls:SliderWithNumber x:Name="slSpeed3" Margin="0,33,0,3"></controls:SliderWithNumber>
-            <controls:SliderWithNumber x:Name="slSpeed3Current" Margin="0,3"></controls:SliderWithNumber>
-
+            <controls:SliderWithNumber x:Name="slSpeed2" Margin="0,3"></controls:SliderWithNumber>
+            <controls:SliderWithNumber x:Name="slSpeed3" Margin="0,3"></controls:SliderWithNumber>
             <controls:SliderWithNumber x:Name="slSpeed4" Margin="0,33,0,3"></controls:SliderWithNumber>
-            <controls:SliderWithNumber x:Name="slSpeed4Current" Margin="0,3"></controls:SliderWithNumber>
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Column="2">

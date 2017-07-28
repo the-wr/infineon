@@ -46,20 +46,35 @@ namespace Infineon
 
             Closing += delegate { SaveConfig(); uploader.Dispose(); };
 
+            controllerDescs.Add( new ControllerDesc( "Inf3_F6", "Infineon 3 (6-FET)",
+                data => new Inf3Controls( data ),
+                () => new InfData( InfDesc.Inf3_F6 ),
+                data => { ( data as InfData ).Desc = InfDesc.Inf3_F6; } ) );
+
+            controllerDescs.Add( new ControllerDesc( "Inf3_F12", "Infineon 3 (12-FET)",
+                data => new Inf3Controls( data ),
+                () => new InfData( InfDesc.Inf3_F12 ),
+                data => { ( data as InfData ).Desc = InfDesc.Inf3_F12; } ) );
+
+            controllerDescs.Add( new ControllerDesc( "Inf3_F18", "Infineon 3 (18-FET)",
+                data => new Inf3Controls( data ),
+                () => new InfData( InfDesc.Inf3_F18 ),
+                data => { ( data as InfData ).Desc = InfDesc.Inf3_F18; } ) );
+
             controllerDescs.Add( new ControllerDesc( "F6", "Infineon 4 (6-FET)",
-                ( data ) => { return new Inf4Controls( data ); },
-                () => { return new Inf4Data( InfineonDesc.F6 ); },
-                (data) => { ( data as Inf4Data ).Desc = InfineonDesc.F6; } ) );
+                data => new Inf4Controls( data ),
+                () => new InfData( InfDesc.Inf4_F6 ),
+                data => { ( data as InfData ).Desc = InfDesc.Inf4_F6; } ) );
 
             controllerDescs.Add( new ControllerDesc( "F12", "Infineon 4 (12-FET)",
-                ( data ) => { return new Inf4Controls( data ); },
-                () => { return new Inf4Data( InfineonDesc.F12 ); },
-                ( data ) => { ( data as Inf4Data ).Desc = InfineonDesc.F12; } ) );
+                data => new Inf4Controls( data ),
+                () => new InfData( InfDesc.Inf4_F12 ),
+                data => { ( data as InfData ).Desc = InfDesc.Inf4_F12; } ) );
 
             controllerDescs.Add( new ControllerDesc( "F18", "Infineon 4 (18-FET)",
-                ( data ) => { return new Inf4Controls( data ); },
-                () => { return new Inf4Data( InfineonDesc.F18 ); },
-                ( data ) => { ( data as Inf4Data ).Desc = InfineonDesc.F6; } ) );
+                data => new Inf4Controls( data ),
+                () => new InfData( InfDesc.Inf4_F18 ),
+                data => { ( data as InfData ).Desc = InfDesc.Inf4_F6; } ) );
 
             Init();
         }

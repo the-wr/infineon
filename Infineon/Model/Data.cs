@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 namespace Infineon.Model
 {
-    [XmlInclude( typeof( Inf4Data ) )]
+    [XmlInclude( typeof( InfData ) )]
     public class IData
     {
         public virtual string Type { get; set; }
@@ -71,9 +71,14 @@ namespace Infineon.Model
         }
     }
 
-    public class InfineonDesc
+    public class InfDesc
     {
-        public static InfineonDesc F6 = new InfineonDesc()
+        public class Inf4Desc : InfDesc
+        {
+            public override double SpeedMultiplier => 1.0 / 0.8;
+        }
+
+        public static InfDesc Inf4_F6 = new Inf4Desc()
         {
             BatteryCurrentMultiplier = 1.0 / 5.10,
             PhaseCurrentMultiplier = 1.0 / 2.85,
@@ -85,7 +90,7 @@ namespace Infineon.Model
             VoltageRangeLimitMin = 0,
         };
 
-        public static InfineonDesc F12 = new InfineonDesc()
+        public static InfDesc Inf4_F12 = new Inf4Desc()
         {
             BatteryCurrentMultiplier = 1.0 / 2.73,
             PhaseCurrentMultiplier = 1.0 / 1.20,
@@ -99,7 +104,7 @@ namespace Infineon.Model
             MinVoltageRangeLimitMin = 77
         };
 
-        public static InfineonDesc F18 = new InfineonDesc()
+        public static InfDesc Inf4_F18 = new Inf4Desc()
         {
             BatteryCurrentMultiplier = 1.0 / 1.70,
             PhaseCurrentMultiplier = 1.0 / 0.53,
@@ -110,13 +115,61 @@ namespace Infineon.Model
             LVCMaxOffset = 2.8232,
             VoltageRangeLimitMax = 212,
             VoltageRangeLimitMin = 70,
-            MinVoltageRangeLimitMin = 77
+            MinVoltageRangeLimitMin = 77,
+        };
+
+        public class Inf3Desc : InfDesc
+        {
+            public override double SpeedMultiplier => 1.26;
+            public override double PASSpeedMultiplier => 1.0 / 1.91;
+        }
+
+        public static InfDesc Inf3_F6 = new Inf3Desc()
+        {
+            Type = "Inf3_F6",
+            PhaseCurrentMultiplier = 1.0 / 1.25,
+            PhaseCurrentOffset = -0.2,
+            BatteryCurrentMultiplier = 1.0 / 1.399,
+            BatteryCurrentOffset = 0.15,
+            LVCMultiplier = 1.0 / 3.184,
+            VoltageRangeLimitMin = 0,   // TODO
+            VoltageRangeLimitMax = 255, // TODO
+            LVCMaxMultiplier = 1.0 / 3.285, // ???: Unclear in reference
+
+        };
+
+        public static InfDesc Inf3_F12 = new Inf3Desc()
+        {
+            Type = "Inf3_F12",
+            PhaseCurrentMultiplier = 1.0 / 0.624,
+            PhaseCurrentOffset = -6,
+            BatteryCurrentMultiplier = 1.0 / 0.7,
+            BatteryCurrentOffset = 0.07,
+            LVCMultiplier = 1.0 / 3.184,
+            VoltageRangeLimitMin = 0,   // TODO
+            VoltageRangeLimitMax = 255, // TODO
+            LVCMaxMultiplier = 1.0 / 3.285, // ???: Unclear in reference
+        };
+
+        public static InfDesc Inf3_F18 = new Inf3Desc()
+        {
+            Type = "Inf3_F18",
+            PhaseCurrentMultiplier = 1.0 / 0.416,
+            PhaseCurrentOffset = -11.9,
+            BatteryCurrentMultiplier = 1.0 / 0.467,
+            BatteryCurrentOffset = 0.03,
+            LVCMultiplier = 1.0 / 3.184,
+            VoltageRangeLimitMin = 0,   // TODO
+            VoltageRangeLimitMax = 255, // TODO
+            LVCMaxMultiplier = 1.0 / 3.285, // ???: Unclear in reference
         };
 
         public string Type { get; private set; }
         public byte FirmwareType { get; private set; }
         public double BatteryCurrentMultiplier { get; private set; }
+        public double BatteryCurrentOffset { get; private set; }    // value offset (pre-multiplier)
         public double PhaseCurrentMultiplier { get; private set; }
+        public double PhaseCurrentOffset { get; private set; }      // value offset (pre-multiplier)
         public double LVCMultiplier { get; private set; }
         public double LVCMaxMultiplier { get; private set; }
         public double LVCMaxOffset { get; private set; }
@@ -124,18 +177,16 @@ namespace Infineon.Model
         public int VoltageRangeLimitMin { get; private set; }
         public int MinVoltageRangeLimitMin { get; private set; }
 
-        public double SLMultiplier => 1.0 / 0.96;
-        public double SpeedMultiplier => 1.0 / 0.8;
+        public virtual double SpeedMultiplier { get; private set; }//=> 1.0 / 0.8;
         public double TimeMultiplier => 1.0 / 10;
         public double ReverseSpeedMultiplier => 1.0 / 1.28;
-        public double PASSpeedMultiplier => 1.0 / 1.28;
+        public virtual double PASSpeedMultiplier => 1.0 / 1.28;
         public double SoftStartCurrentMultiplier => 1.0 / 1.28;
-        public double LVCBatteryCurrentMultiplier => 1.0 / 13.18;
         public double RecoverSpeedMultiplier => 1.0 / 1.28;
         public double CurrentMultiplierPercent => 1.0 / 1.28;
     }
 
-    public class Inf4Data : IData
+    public class InfData : IData
     {
         public override string Type { get; set; }
 
@@ -168,9 +219,9 @@ namespace Infineon.Model
         public bool HallsAngle { get; set; }
 
         [XmlIgnore]
-        public InfineonDesc Desc { get; set; }
+        public InfDesc Desc { get; set; }
 
-        public Inf4Data()
+        public InfData()
         {
             BatteryCurrent = 128;
             PhaseCurrent = 128;
@@ -197,7 +248,7 @@ namespace Infineon.Model
             ReverseSpeed = 16;
         }
 
-        public Inf4Data( InfineonDesc desc ) : this()
+        public InfData( InfDesc desc ) : this()
         {
             Type = desc.Type;
             Desc = desc;

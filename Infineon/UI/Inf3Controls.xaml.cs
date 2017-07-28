@@ -8,13 +8,13 @@ namespace Infineon.UI
     /// <summary>
     /// Interaction logic for Inf4Controls.xaml
     /// </summary>
-    public partial class Inf4Controls : UserControl, IUIControls
+    public partial class Inf3Controls : UserControl, IUIControls
     {
         private InfData data;
 
         public event Action<string> ShowHelp;
 
-        public Inf4Controls(IData data)
+        public Inf3Controls(IData data)
         {
             InitializeComponent();
 
@@ -32,16 +32,9 @@ namespace Infineon.UI
             slPhaseCurrent.SetCaption( l.GetString( 14 ) );//( "Phase current"
 
             slSpeed1.SetCaption( l.GetString( 15 ) );//( "Speed 1 percent"
-            slSpeed1Current.SetCaption( l.GetString( 33 ) );
-
             slSpeed2.SetCaption( l.GetString( 16 ) );//( "Speed 2 percent"
-            slSpeed2Current.SetCaption( l.GetString( 34 ) );//( "Speed 1 percent"
-
             slSpeed3.SetCaption( l.GetString( 17 ) );//( "Speed 3 percent"
-            slSpeed3Current.SetCaption( l.GetString( 35 ) );//( "Speed 1 percent"
-
             slSpeed4.SetCaption( l.GetString( 18 ) );//( "Speed 4 percent"
-            slSpeed4Current.SetCaption( l.GetString( 36 ) );//( "Speed 1 percent"
 
             slMinVoltage.SetCaption( l.GetString( 19 ) );//( "Min voltage"
             slMinVoltageTolerance.SetCaption( l.GetString( 20 ) );//( "Tolerance"
@@ -64,26 +57,22 @@ namespace Infineon.UI
         {
             var l = Localization.Instance;
 
-            slBatteryCurrent.Setup( l.GetString( 13 ), 0, 255, data.Desc.BatteryCurrentMultiplier, 0, 0, data.BatteryCurrent, v => data.BatteryCurrent = v );
-            slPhaseCurrent.Setup( l.GetString( 14 ), 0, 255, data.Desc.PhaseCurrentMultiplier, 0, 0, data.PhaseCurrent, v => data.PhaseCurrent = v );
+            slBatteryCurrent.Setup( l.GetString( 13 ), 0, 255, data.Desc.BatteryCurrentMultiplier, 0, data.Desc.BatteryCurrentOffset, data.BatteryCurrent, v => data.BatteryCurrent = v );
+            slPhaseCurrent.Setup( l.GetString( 14 ), 0, 255, data.Desc.PhaseCurrentMultiplier, 0, data.Desc.PhaseCurrentOffset, data.PhaseCurrent, v => data.PhaseCurrent = v );
 
-            slSpeed1.Setup( l.GetString( 15 ), 0, 104, data.Desc.SpeedMultiplier, 0, 0, data.Speed1Percentage, v => data.Speed1Percentage = v );
-            slSpeed1Current.Setup( l.GetString( 33 ), 0, 141, data.Desc.CurrentMultiplierPercent, 0, 0, data.Speed1CurrentPercentage, v => data.Speed1CurrentPercentage = v );
-            slSpeed2.Setup( l.GetString( 16 ), 0, 104, data.Desc.SpeedMultiplier, 0, 0, data.Speed2Percentage, v => data.Speed2Percentage = v );
-            slSpeed2Current.Setup( l.GetString( 34 ), 0, 141, data.Desc.CurrentMultiplierPercent, 0, 0, data.Speed2CurrentPercentage, v => data.Speed2CurrentPercentage = v );
-            slSpeed3.Setup( l.GetString( 17 ), 0, 104, data.Desc.SpeedMultiplier, 0, 0, data.Speed3Percentage, v => data.Speed3Percentage = v );
-            slSpeed3Current.Setup( l.GetString( 35 ), 0, 141, data.Desc.CurrentMultiplierPercent, 0, 0, data.Speed3CurrentPercentage, v => data.Speed3CurrentPercentage = v );
+            slSpeed1.Setup( l.GetString( 15 ), 24, 95, data.Desc.SpeedMultiplier, 0, 0, data.Speed1Percentage, v => data.Speed1Percentage = v );
+            slSpeed2.Setup( l.GetString( 16 ), 24, 95, data.Desc.SpeedMultiplier, 0, 0, data.Speed2Percentage, v => data.Speed2Percentage = v );
+            slSpeed3.Setup( l.GetString( 17 ), 24, 95, data.Desc.SpeedMultiplier, 0, 0, data.Speed3Percentage, v => data.Speed3Percentage = v );
             slSpeed4.Setup( l.GetString( 18 ), 24, 95, data.Desc.SpeedMultiplier, 0, 0, data.Speed4Percentage, v => data.Speed4Percentage = v );
-            slSpeed4Current.Setup( l.GetString( 36 ), 0, 141, data.Desc.CurrentMultiplierPercent, 0, 0, data.Speed4CurrentPercentage, v => data.Speed4CurrentPercentage = v );
 
             slMinVoltage.Setup( l.GetString( 19 ), data.Desc.MinVoltageRangeLimitMin, data.Desc.VoltageRangeLimitMax, data.Desc.LVCMultiplier, 0, 0, data.MinVoltage, v => data.MinVoltage = v );
             slMinVoltageTolerance.Setup( l.GetString( 20 ), 0, data.Desc.VoltageRangeLimitMax, data.Desc.LVCMultiplier, 0, 0, data.MinVoltageTolerance, v => data.MinVoltageTolerance = v );
 
             cbRegenEnabled.Setup( l.GetString( 21 ), data.RegenEnabled, v => data.RegenEnabled = v );
-            slRegenStr.Setup( l.GetString( 22 ), 0, 200, 1, 0, 0, data.RegenStrength, v => data.RegenStrength = v );
+            slRegenStr.Setup( l.GetString( 22 ), 1, 3, 1, 0, 0, data.RegenStrength, v => data.RegenStrength = v );
             slMaxVoltage.Setup( l.GetString( 23 ), data.Desc.VoltageRangeLimitMin, data.Desc.VoltageRangeLimitMax, data.Desc.LVCMaxMultiplier, data.Desc.LVCMaxOffset, 0, data.RegenMaxVoltage, v => data.RegenMaxVoltage = v );
 
-            slPasMaxSpeed.Setup( l.GetString( 24 ), 0, 128, data.Desc.PASSpeedMultiplier, 0, 0, data.PASMaxSpeed, v => data.PASMaxSpeed = v );
+            slPasMaxSpeed.Setup( l.GetString( 24 ), 0, 191, data.Desc.PASSpeedMultiplier, 0, 0, data.PASMaxSpeed, v => data.PASMaxSpeed = v );
             slPasPulses.Setup( l.GetString( 25 ), 1, 15, 1, 0, 0, data.PASPulsesToSkip, v => data.PASPulsesToSkip = v );
 
             sl3PosMode.Setup( l.GetString( 26 ), 1, 4, 1, 0, 0, data.ThreePosMode, v => data.ThreePosMode = v );
@@ -99,11 +88,6 @@ namespace Infineon.UI
             BindHelpToControl( slSpeed2, "Speed2" );
             BindHelpToControl( slSpeed3, "Speed3" );
             BindHelpToControl( slSpeed4, "Speed4" );
-
-            BindHelpToControl( slSpeed1Current, "Speed1Current" );
-            BindHelpToControl( slSpeed2Current, "Speed2Current" );
-            BindHelpToControl( slSpeed3Current, "Speed3Current" );
-            BindHelpToControl( slSpeed4Current, "Speed4Current" );
 
             BindHelpToControl( slMinVoltage, "MinVoltage" );
             BindHelpToControl( slMinVoltageTolerance, "VoltageTolerance" );

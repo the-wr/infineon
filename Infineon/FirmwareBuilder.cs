@@ -8,6 +8,39 @@ namespace Infineon
 
     public class FirmwareBuilder
     {
+        private static byte[] defaultInf3Data = new byte[]
+        {
+            0x02, 0x0f, 
+            0,
+            0,
+            0,
+            0,
+            38,
+            0,
+            24, 24, 24,
+            100,
+            150,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            1,
+            1,
+            24,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0,
+            255
+        };
+
         private static byte[] defaultInf4Data = new byte[]
         {
             0x02, 0x0f, 0x44, 0x6d, 0x64, 0x03, 0x5c, 0x00, 0x18, 0x40, 0x53,
@@ -28,13 +61,58 @@ namespace Infineon
 
         public static byte[] BuildFirmware( IData data )
         {
-            if ( data is Inf4Data )
-                return BuildInf4Firmware( data as Inf4Data );
+            if ( data.Type.StartsWith( "Inf3" ) )
+                return BuildInf3Firmware( data as InfData );
 
-            return null;
+            return BuildInf4Firmware( data as InfData );
         }
 
-        public static byte[] BuildInf4Firmware( Inf4Data data )
+        public static byte[] BuildInf3Firmware( InfData data )
+        {
+            var buffer = new byte[defaultInf3Data.Length];
+            Array.Copy( defaultInf3Data, buffer, defaultInf3Data.Length - 1 );  // Don't need last byte
+
+            buffer[2] = (byte)data.PhaseCurrent;
+            buffer[3] = (byte)data.BatteryCurrent;
+            buffer[4] = (byte)data.MinVoltage;
+            buffer[5] = (byte)data.MinVoltageTolerance;
+            //buffer[6] = 96;
+            buffer[7] = (byte)( data.ThreePosMode - 1 );
+            buffer[8] = (byte)data.Speed1Percentage;
+            buffer[9] = (byte)data.Speed2Percentage;
+            buffer[10] = (byte)data.Speed3Percentage;
+            //buffer[11] = 0;
+            //buffer[12] = 0;
+            buffer[13] = data.OnePedalMode ? (byte)0 : (byte)1;
+            //buffer[14] = 0;
+            //buffer[15] = (byte)data.RegenStrength;
+
+            if ( !data.RegenEnabled )
+                buffer[15] = 0;
+            else if ( data.RegenStrength == 1 )
+                buffer[15] = 4;
+            else if ( data.RegenStrength == 2 )
+                buffer[15] = 8;
+            else
+                buffer[15] = 255;
+
+            buffer[16] = (byte)data.ReverseSpeed;
+            buffer[17] = (byte)data.RegenMaxVoltage;
+            //buffer[18] = 0;   
+            buffer[19] = data.ThrottleProtection ? (byte)1 : (byte)0;
+            //buffer[20] = 0;
+            buffer[21] = (byte)data.PASPulsesToSkip;
+            buffer[22] = 1;
+            buffer[23] = (byte)data.Speed4Percentage;
+            buffer[24] = data.HallsAngle ? (byte)0 : (byte)1;
+            buffer[25] = (byte)data.PASMaxSpeed;
+
+            buffer[buffer.Length - 1] = buffer.Aggregate( ( a, b ) => (byte)( a ^ b ) );
+            return buffer;
+
+        }
+
+        public static byte[] BuildInf4Firmware( InfData data )
         {
             var buffer = new byte[defaultInf4Data.Length];
             Array.Copy( defaultInf4Data, buffer, defaultInf4Data.Length - 1 );  // Don't need last byte

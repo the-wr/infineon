@@ -58,6 +58,9 @@
     <Compile Include="FirmwareBuilder.cs" />
     <Compile Include="HelpWindow.cs" />
     <Compile Include="Localization.cs" />
+    <Compile Include="UI\Inf3Controls.xaml.cs">
+      <DependentUpon>Inf3Controls.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Inf4Controls.xaml.cs">
       <DependentUpon>Inf4Controls.xaml</DependentUpon>
     </Compile>
@@ -90,6 +93,10 @@
     <Page Include="PresetsPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Inf3Controls.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\Inf4Controls.xaml">
       <SubType>Designer</SubType>

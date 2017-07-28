@@ -13,6 +13,7 @@ namespace Infineon.Controls
     {
         private double multiplier = 1;
         private double offset = 0;
+        private double preMultOffset = 0;
         private bool muted;
 
         private Action<int> valueChanged;
@@ -28,10 +29,10 @@ namespace Infineon.Controls
             tbValue.TextChanged += OnTextChanged;
             tbValue.LostFocus += OnLostFocus;
 
-            Setup( "Unnamed", 0, 10, 1, 0, 0, null );
+            Setup( "Unnamed", 0, 10, 1, 0, 0, 0,null );
         }
 
-        public void Setup( string name, int min, int max, double multiplier, double offset, int value, Action<int> setValueCb )
+        public void Setup( string name, int min, int max, double multiplier, double offset, double preMultOffset, int value, Action<int> setValueCb )
         {
             tbName.Text = name;
             slValue.Minimum = min;
@@ -41,6 +42,7 @@ namespace Infineon.Controls
 
             this.multiplier = multiplier;
             this.offset = offset;
+            this.preMultOffset = preMultOffset;
             valueChanged = setValueCb;
 
             // Update text
@@ -67,7 +69,7 @@ namespace Infineon.Controls
 
             muted = true;
 
-            tbValue.Text = $"{slValue.Value * multiplier + offset:0.0}";
+            tbValue.Text = $"{( slValue.Value - preMultOffset ) * multiplier + offset:0.0}";
             valueChanged?.Invoke( (int)slValue.Value );
 
             muted = false;
@@ -83,7 +85,7 @@ namespace Infineon.Controls
             double d;
             if ( double.TryParse( tbValue.Text, NumberStyles.Any, CultureInfo.CurrentCulture, out d ) )
             {
-                slValue.Value = (int)Math.Round( ( d - offset ) / multiplier );
+                slValue.Value = (int)Math.Round( ( d - offset ) / multiplier + preMultOffset );
                 valueChanged?.Invoke( (int)slValue.Value );
             }
 
@@ -95,8 +97,8 @@ namespace Infineon.Controls
             double d;
             if ( double.TryParse( tbValue.Text, NumberStyles.Any, CultureInfo.CurrentCulture, out d ) )
             {
-                slValue.Value = (int)Math.Round( ( d - offset ) / multiplier );
-                tbValue.Text = $"{slValue.Value * multiplier + offset:0.0}";
+                slValue.Value = (int)Math.Round( ( d - offset ) / multiplier + preMultOffset );
+                tbValue.Text = $"{( slValue.Value - preMultOffset ) * multiplier + offset:0.0}";
                 valueChanged?.Invoke( (int)slValue.Value );
             }
         }
