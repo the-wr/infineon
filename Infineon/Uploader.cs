@@ -72,7 +72,7 @@ namespace Infineon
                 }
 
                 // 2. Send data, wait for "QR"
-                port.Write( buffer, 0, 64 );
+                port.Write( buffer, 0, buffer.Length );
 
                 dispatcher.Invoke( new Action( () => OnWaitingForReply?.Invoke() ) );
 
