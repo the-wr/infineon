@@ -57,7 +57,7 @@ namespace Infineon.UI
         {
             var l = Localization.Instance;
 
-            slBatteryCurrent.Setup( l.GetString( 13 ), 0, 255, data.Desc.BatteryCurrentMultiplier, 0, data.Desc.BatteryCurrentOffset, data.BatteryCurrent, v => data.BatteryCurrent = v );
+            slBatteryCurrent.Setup( l.GetString( 13 ), 0, data.Desc.BatteryCurrentLimit, data.Desc.BatteryCurrentMultiplier, 0, data.Desc.BatteryCurrentOffset, data.BatteryCurrent, v => data.BatteryCurrent = v );
             slPhaseCurrent.Setup( l.GetString( 14 ), 0, 255, data.Desc.PhaseCurrentMultiplier, 0, data.Desc.PhaseCurrentOffset, data.PhaseCurrent, v => data.PhaseCurrent = v );
 
             slSpeed1.Setup( l.GetString( 15 ), 24, 95, data.Desc.SpeedMultiplier, 0, 0, data.Speed1Percentage, v => data.Speed1Percentage = v );

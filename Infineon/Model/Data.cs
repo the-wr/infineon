@@ -76,6 +76,11 @@ namespace Infineon.Model
         public class Inf4Desc : InfDesc
         {
             public override double SpeedMultiplier => 1.0 / 0.8;
+
+            public Inf4Desc()
+            {
+                BatteryCurrentLimit = 255;
+            }
         }
 
         public static InfDesc Inf4_F6 = new Inf4Desc()
@@ -127,47 +132,50 @@ namespace Infineon.Model
         public static InfDesc Inf3_F6 = new Inf3Desc()
         {
             Type = "Inf3_F6",
-            PhaseCurrentMultiplier = 1.0 / 1.25,
+            PhaseCurrentMultiplier = 1.0 / 1.25 / 2,
             PhaseCurrentOffset = -0.2,
-            BatteryCurrentMultiplier = 1.0 / 1.399,
+            BatteryCurrentMultiplier = 1.0 / 1.399 / 2,
             BatteryCurrentOffset = 0.15,
-            LVCMultiplier = 1.0 / 3.184,
+            BatteryCurrentLimit = 140,
+            LVCMultiplier = 1.0 / 3.285 * 1.25,
             VoltageRangeLimitMin = 0,   // TODO
-            VoltageRangeLimitMax = 255, // TODO
-            LVCMaxMultiplier = 1.0 / 3.285, // ???: Unclear in reference
-
+            VoltageRangeLimitMax = 249,
+            LVCMaxMultiplier = 1.0 / 3.285 * 1.25,
         };
 
         public static InfDesc Inf3_F12 = new Inf3Desc()
         {
             Type = "Inf3_F12",
-            PhaseCurrentMultiplier = 1.0 / 0.624,
+            PhaseCurrentMultiplier = 1.0 / 0.624 / 2,
             PhaseCurrentOffset = -6,
-            BatteryCurrentMultiplier = 1.0 / 0.7,
+            BatteryCurrentLimit = 140,
+            BatteryCurrentMultiplier = 1.0 / 0.7 / 2,
             BatteryCurrentOffset = 0.07,
-            LVCMultiplier = 1.0 / 3.184,
+            LVCMultiplier = 1.0 / 3.285 * 1.25,
             VoltageRangeLimitMin = 0,   // TODO
-            VoltageRangeLimitMax = 255, // TODO
-            LVCMaxMultiplier = 1.0 / 3.285, // ???: Unclear in reference
+            VoltageRangeLimitMax = 249,
+            LVCMaxMultiplier = 1.0 / 3.285 * 1.25,
         };
 
         public static InfDesc Inf3_F18 = new Inf3Desc()
         {
             Type = "Inf3_F18",
-            PhaseCurrentMultiplier = 1.0 / 0.416,
+            PhaseCurrentMultiplier = 1.0 / 0.416 / 2,
             PhaseCurrentOffset = -11.9,
-            BatteryCurrentMultiplier = 1.0 / 0.467,
+            BatteryCurrentLimit = 140,
+            BatteryCurrentMultiplier = 1.0 / 0.467 / 2,
             BatteryCurrentOffset = 0.03,
-            LVCMultiplier = 1.0 / 3.184,
+            LVCMultiplier = 1.0 / 3.285 * 1.25,
             VoltageRangeLimitMin = 0,   // TODO
-            VoltageRangeLimitMax = 255, // TODO
-            LVCMaxMultiplier = 1.0 / 3.285, // ???: Unclear in reference
+            VoltageRangeLimitMax = 249,
+            LVCMaxMultiplier = 1.0 / 3.285 * 1.25,
         };
 
         public string Type { get; private set; }
         public byte FirmwareType { get; private set; }
         public double BatteryCurrentMultiplier { get; private set; }
         public double BatteryCurrentOffset { get; private set; }    // value offset (pre-multiplier)
+        public int BatteryCurrentLimit { get; private set; }
         public double PhaseCurrentMultiplier { get; private set; }
         public double PhaseCurrentOffset { get; private set; }      // value offset (pre-multiplier)
         public double LVCMultiplier { get; private set; }
@@ -252,6 +260,7 @@ namespace Infineon.Model
         {
             Type = desc.Type;
             Desc = desc;
+            BatteryCurrent = Desc.BatteryCurrentLimit / 2;
         }
     }
 }

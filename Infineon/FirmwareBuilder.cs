@@ -4,44 +4,35 @@ using Infineon.Model;
 
 namespace Infineon
 {
-    // See https://docs.google.com/document/d/1_j1sQXE_mUbxM1kt8uC3dCofh9ERctOILo7Q009rxnY/edit#
+    // Inf3 protocol: https://docs.google.com/document/d/10jN2S5Q2AFDBKbGEPjNo5vy1aJBgKZ1aWGTEG4EzeUM/edit#
+    // Inf4 protocol: https://docs.google.com/document/d/1_j1sQXE_mUbxM1kt8uC3dCofh9ERctOILo7Q009rxnY/edit#
 
     public class FirmwareBuilder
     {
-        private static byte[] defaultInf3Data = new byte[]
+        private static readonly byte[] defaultInf3Data = new byte[]
         {
             0x02, 0x0f, 
-            0,
-            0,
-            0,
-            0,
-            38,
-            0,
-            24, 24, 24,
-            100,
-            150,
-            1,
-            0,
-            0,
-            0,
-            0,
-            0,
-            1,
-            0,
-            1,
-            1,
-            24,
-            0,
-            0,
-            0,
-            3,
+            0x1d, 0x0e,
+            0x60, 0x03,
+            0x7f, 0x00,
+            0x28, 0x3b,
+            0x4f, 0x0a,
+            0x96, 0x01,
+            0x01, 0x08,
+
+            0xbf, 0xf6,
+            0x00, 0x01,
+            0x00, 0x04,
+            0x01, 0x4f,
+            0x02, 0xbf,
+            0x00, 0x03,
             0,
             0,
             0,
             255
         };
 
-        private static byte[] defaultInf4Data = new byte[]
+        private static readonly byte[] defaultInf4Data = new byte[]
         {
             0x02, 0x0f, 0x44, 0x6d, 0x64, 0x03, 0x5c, 0x00, 0x18, 0x40, 0x53,
             0x05, // 11
@@ -71,11 +62,12 @@ namespace Infineon
         {
             var buffer = new byte[defaultInf3Data.Length];
             Array.Copy( defaultInf3Data, buffer, defaultInf3Data.Length - 1 );  // Don't need last byte
-
+            
             buffer[2] = (byte)data.PhaseCurrent;
             buffer[3] = (byte)data.BatteryCurrent;
             buffer[4] = (byte)data.MinVoltage;
             buffer[5] = (byte)data.MinVoltageTolerance;
+            
             //buffer[6] = 96;
             buffer[7] = (byte)( data.ThreePosMode - 1 );
             buffer[8] = (byte)data.Speed1Percentage;
@@ -86,6 +78,7 @@ namespace Infineon
             buffer[13] = data.OnePedalMode ? (byte)0 : (byte)1;
             //buffer[14] = 0;
             //buffer[15] = (byte)data.RegenStrength;
+            
 
             if ( !data.RegenEnabled )
                 buffer[15] = 0;

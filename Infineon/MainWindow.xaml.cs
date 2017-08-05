@@ -45,22 +45,22 @@ namespace Infineon
             cbPort.DropDownOpened += OnPortDropDownOpened;
 
             Closing += delegate { SaveConfig(); uploader.Dispose(); };
-
+            /*
             controllerDescs.Add( new ControllerDesc( "Inf3_F6", "Infineon 3 (6-FET)",
                 data => new Inf3Controls( data ),
                 () => new InfData( InfDesc.Inf3_F6 ),
                 data => { ( data as InfData ).Desc = InfDesc.Inf3_F6; } ) );
-
+                */
             controllerDescs.Add( new ControllerDesc( "Inf3_F12", "Infineon 3 (12-FET)",
                 data => new Inf3Controls( data ),
                 () => new InfData( InfDesc.Inf3_F12 ),
                 data => { ( data as InfData ).Desc = InfDesc.Inf3_F12; } ) );
-
+            /*
             controllerDescs.Add( new ControllerDesc( "Inf3_F18", "Infineon 3 (18-FET)",
                 data => new Inf3Controls( data ),
                 () => new InfData( InfDesc.Inf3_F18 ),
                 data => { ( data as InfData ).Desc = InfDesc.Inf3_F18; } ) );
-
+                */
             controllerDescs.Add( new ControllerDesc( "F6", "Infineon 4 (6-FET)",
                 data => new Inf4Controls( data ),
                 () => new InfData( InfDesc.Inf4_F6 ),
