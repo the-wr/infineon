@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Infineon"
         xmlns:controls="clr-namespace:Infineon.Controls"
         mc:Ignorable="d"
-        Title="E4BIKE Controller Programming Tool (R4)" Height="730" Width="1040" WindowStartupLocation="CenterScreen">
+        Title="E4BIKE Controller Programming Tool (R5)" Height="730" Width="1040" WindowStartupLocation="CenterScreen">
     <DockPanel SnapsToDevicePixels="True">
 
         <!--
