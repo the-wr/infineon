@@ -9,8 +9,42 @@ namespace Infineon
 
     public class FirmwareBuilder
     {
+        /*
+         * EB312/Cellman
+         * 02 0F 14 0B 01 03 7F 01 1A 34 5F 14 64 01 01 FF   ........4_.d..я
+         * 02 FF 00 00 00 01 01 4F 02 BF 00 08 00 00 00 97   .я.....O.ї.....—
+         * 
+         * EB312
+         * 02 0F 28 16 86 03 7F 01 
+         * 1A 34 5F 14 64 01 01 FF   ..(.†...4_.d..я
+         * 02 FF 00 00 00 01 01 4F 
+         * 02 BF 00 03 00 00 00 3A   .я.....O.ї.....:
+         * 
+         * 6FET/Cellman
+         * 02 0F 28 16 01 03 7F 01 1A 34 5F 14 64 01 01 FF   ..(.....4_.d..я
+         * 02 FF 00 00 00 01 01 4F 02 BF 00 06 00 00 00 B8   .я.....O.ї.....ё
+         * */
+
+
         private static readonly byte[] defaultInf3Data = new byte[]
         {
+            0x02, 0x0F, // 0 1     0x02, 0x0f,   . .     . .
+            0x28, 0x16, // 2 3     0x1d, 0x0e,   o o     . .
+            0x86, 0x03, // 4 5     0x60, 0x03,   o .     . .
+            0x7F, 0x01, // 6 7     0x7f, 0x00,   . o     . .
+            0x1A, 0x34, // 8 9     0x28, 0x3b,   o o     . .
+            0x5F, 0x14, // 10 11   0x4f, 0x0a,   o o     . o
+            0x64, 0x01, // 12 13   0x96, 0x01,   o .     o .
+            0x01, 0xFF, // 14 15   0x01, 0x08,   . o     . o
+            0x02, 0xFF, // 16 17   0xbf, 0xf6,   o o     o o
+            0x00, 0x00, // 18 19   0x00, 0x01,   . o     . o
+            0x00, 0x01, // 20 21   0x00, 0x04,   . o     . o
+            0x01, 0x4F, // 22 23   0x01, 0x4f,   . .     . .
+            0x02, 0xBF, // 24 25   0x02, 0xbf,   . .     . .
+            0x00, 0x03, // 26 27   0x00, 0x03,   . .     . .
+            0x00, 0x00, // 28 29   
+            0x00, 0x3A, // 30 31   
+            /*                     
             0x02, 0x0f, 
             0x1d, 0x0e,
             0x60, 0x03,
@@ -29,7 +63,7 @@ namespace Infineon
             0,
             0,
             0,
-            255
+            255*/
         };
 
         private static readonly byte[] defaultInf4Data = new byte[]
@@ -62,25 +96,20 @@ namespace Infineon
         {
             var buffer = new byte[defaultInf3Data.Length];
             Array.Copy( defaultInf3Data, buffer, defaultInf3Data.Length - 1 );  // Don't need last byte
-            
+
             buffer[2] = (byte)data.PhaseCurrent;
             buffer[3] = (byte)data.BatteryCurrent;
             buffer[4] = (byte)data.MinVoltage;
             buffer[5] = (byte)data.MinVoltageTolerance;
-            
-            //buffer[6] = 96;
+
             buffer[7] = (byte)( data.ThreePosMode - 1 );
             buffer[8] = (byte)data.Speed1Percentage;
             buffer[9] = (byte)data.Speed2Percentage;
             buffer[10] = (byte)data.Speed3Percentage;
-            //buffer[11] = 0;
-            //buffer[12] = 0;
-            buffer[13] = data.OnePedalMode ? (byte)0 : (byte)1;
-            //buffer[14] = 0;
-            //buffer[15] = (byte)data.RegenStrength;
-            
 
-            if ( !data.RegenEnabled )
+            buffer[13] = data.OnePedalMode ? (byte)0 : (byte)1;
+
+            if ( !data.RegenEnabled ) //"EBSLevel",
                 buffer[15] = 0;
             else if ( data.RegenStrength == 1 )
                 buffer[15] = 4;
@@ -91,37 +120,37 @@ namespace Infineon
 
             buffer[16] = (byte)data.ReverseSpeed;
             buffer[17] = (byte)data.RegenMaxVoltage;
-            //buffer[18] = 0;   
+
             buffer[19] = data.ThrottleProtection ? (byte)1 : (byte)0;
-            //buffer[20] = 0;
+
             buffer[21] = (byte)data.PASPulsesToSkip;
-            buffer[22] = 1;
+            buffer[22] = 1; //"DefaultSpeed",
             buffer[23] = (byte)data.Speed4Percentage;
             buffer[24] = data.HallsAngle ? (byte)0 : (byte)1;
+
             buffer[25] = (byte)data.PASMaxSpeed;
+            buffer[27] = data.Desc.TypeByte;
 
             buffer[buffer.Length - 1] = buffer.Aggregate( ( a, b ) => (byte)( a ^ b ) );
             return buffer;
-
         }
 
         public static byte[] BuildInf4Firmware( InfData data )
         {
             var buffer = new byte[defaultInf4Data.Length];
             Array.Copy( defaultInf4Data, buffer, defaultInf4Data.Length - 1 );  // Don't need last byte
-
             // TODO
 
             buffer[2] = (byte)data.PhaseCurrent;
             buffer[3] = (byte)data.BatteryCurrent;
             buffer[4] = (byte)data.MinVoltage;
             buffer[5] = (byte)data.MinVoltageTolerance;
-            //buffer[6] = 96;
+            //buffer[6] = 96; 
             buffer[7] = (byte)( data.ThreePosMode - 1 );
             buffer[8] = (byte)data.Speed1Percentage;
             buffer[9] = (byte)data.Speed2Percentage;
             buffer[10] = (byte)data.Speed3Percentage;
-            //buffer[11] = 0;
+            //buffer[11] = 0; 
             //buffer[12] = 0;
             buffer[13] = data.OnePedalMode ? (byte)0 : (byte)1;
             //buffer[14] = 0;
@@ -130,9 +159,9 @@ namespace Infineon
             buffer[17] = (byte)data.RegenMaxVoltage;
             //buffer[18] = 0;   
             buffer[19] = data.ThrottleProtection ? (byte)1 : (byte)0;
-            //buffer[20] = 0;
+            //buffer[20] = 0; 
             buffer[21] = (byte)data.PASPulsesToSkip;
-            buffer[22] = 1;
+            buffer[22] = 1; 
             buffer[23] = (byte)data.Speed4Percentage;
             buffer[24] = data.Desc.FirmwareType;
             //buffer[25] = 0;

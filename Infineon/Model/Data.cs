@@ -132,6 +132,7 @@ namespace Infineon.Model
         public static InfDesc Inf3_F6 = new Inf3Desc()
         {
             Type = "Inf3_F6",
+            TypeByte = 1,
             PhaseCurrentMultiplier = 1.0 / 1.25 / 2,
             PhaseCurrentOffset = -0.2,
             BatteryCurrentMultiplier = 1.0 / 1.399 / 2,
@@ -146,6 +147,7 @@ namespace Infineon.Model
         public static InfDesc Inf3_F12 = new Inf3Desc()
         {
             Type = "Inf3_F12",
+            TypeByte = 3,
             PhaseCurrentMultiplier = 1.0 / 0.624 / 2,
             PhaseCurrentOffset = -6,
             BatteryCurrentLimit = 140,
@@ -160,6 +162,7 @@ namespace Infineon.Model
         public static InfDesc Inf3_F18 = new Inf3Desc()
         {
             Type = "Inf3_F18",
+            // TypeByte = 7, // TODO!!!
             PhaseCurrentMultiplier = 1.0 / 0.416 / 2,
             PhaseCurrentOffset = -11.9,
             BatteryCurrentLimit = 140,
@@ -172,6 +175,7 @@ namespace Infineon.Model
         };
 
         public string Type { get; private set; }
+        public byte TypeByte { get; private set; }
         public byte FirmwareType { get; private set; }
         public double BatteryCurrentMultiplier { get; private set; }
         public double BatteryCurrentOffset { get; private set; }    // value offset (pre-multiplier)
