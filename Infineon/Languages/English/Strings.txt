@@ -9,7 +9,7 @@ Port:
 Upload parameters
 Parameters uploaded successfully!
 Error: 
-Please press and hold the button on the cable...
+Waiting for controller...
 Waiting for controller reply...
 Battery current
 Phase current
@@ -35,3 +35,5 @@ Speed 1 current %
 Speed 2 current %
 Speed 3 current %
 Speed 4 current %
+Programming instructions
+?lang=en

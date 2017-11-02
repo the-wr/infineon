@@ -8,6 +8,8 @@ using System.Xml.Serialization;
 using Infineon.Model;
 using System.Collections.Generic;
 using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Navigation;
 using Infineon.UI;
 
 namespace Infineon
@@ -29,6 +31,8 @@ namespace Infineon
 
         private List<IControllerDesc> controllerDescs = new List<IControllerDesc>();
 
+        private string urlSuffix = "";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -43,6 +47,12 @@ namespace Infineon
 
             btnUpload.Click += OnBtnUploadClicked;
             cbPort.DropDownOpened += OnPortDropDownOpened;
+
+            hyperlinkProgrammingInstructions.RequestNavigate += delegate( object sender, RequestNavigateEventArgs e )
+            {
+                Process.Start( new ProcessStartInfo( e.Uri.AbsoluteUri + urlSuffix ) );
+                e.Handled = true;
+            };
 
             Closing += delegate { SaveConfig(); uploader.Dispose(); };
            
@@ -137,6 +147,7 @@ namespace Infineon
                 imgError.Visibility = Visibility.Collapsed;
                 imgOk.Visibility = Visibility.Collapsed;
                 tbUploadMessage.Text = Localization.Instance.GetString( 11 );
+                tbProgrammingInstructions.Visibility = Visibility.Collapsed;
             };
             uploader.OnWaitingForReply += delegate
             {
@@ -322,6 +333,10 @@ namespace Infineon
             btnSaveAs.Content = l.GetString( 6 );
             tbPort.Text = l.GetString( 7 );
             btnUpload.Content = l.GetString( 8 );
+
+            hyperlinkProgrammingInstructions.Inlines.Clear();
+            hyperlinkProgrammingInstructions.Inlines.Add( new Run( l.GetString( 37 ) ) );
+            urlSuffix = l.GetString( 38 );
 
             if ( controls != null )
                 controls.UpdateLanguage();

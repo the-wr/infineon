@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Infineon"
         xmlns:controls="clr-namespace:Infineon.Controls"
         mc:Ignorable="d"
-        Title="E4BIKE Controller Programming Tool (R5)" Height="730" Width="1040" WindowStartupLocation="CenterScreen">
+        Title="E4BIKE Controller Programming Tool (R6)" Height="730" Width="1040" WindowStartupLocation="CenterScreen">
     <DockPanel SnapsToDevicePixels="True">
 
         <!--
@@ -16,11 +16,11 @@
         </StackPanel>
         -->
 
-            <DockPanel DockPanel.Dock="Top" Margin="30,30,30,20">
-                <Image Name="imgLogo" DockPanel.Dock="Left" Height="30" Source="Resources/logo.png"/>
-                <ComboBox Name="cbLanguages" DockPanel.Dock="Right" Width="120" Height="22"></ComboBox>
-                <TextBlock Name="tbCaption" VerticalAlignment="Center" FontSize="18" Margin="20,0">Controller Programming Tool</TextBlock>
-            </DockPanel>
+        <DockPanel DockPanel.Dock="Top" Margin="30,30,30,20">
+            <Image Name="imgLogo" DockPanel.Dock="Left" Height="30" Source="Resources/logo.png"/>
+            <ComboBox Name="cbLanguages" DockPanel.Dock="Right" Width="120" Height="22"></ComboBox>
+            <TextBlock Name="tbCaption" VerticalAlignment="Center" FontSize="18" Margin="20,0">Controller Programming Tool</TextBlock>
+        </DockPanel>
 
         <DockPanel DockPanel.Dock="Top" Margin="30,0">
 
@@ -42,7 +42,7 @@
         </DockPanel>
 
         <DockPanel Dock="Bottom" Margin="30,0,30,30">
-            <Button Name="btnUpload" Width="160" DockPanel.Dock="Right">Upload parameters</Button>
+            <Button Name="btnUpload" Width="240" DockPanel.Dock="Right">Upload parameters</Button>
             <ComboBox Name="cbPort" Width="100" DockPanel.Dock="Right" IsEditable="True" Height="22" Margin="10,0"></ComboBox>
             <TextBlock Name="tbPort" VerticalAlignment="Center" DockPanel.Dock="Right">Port:</TextBlock>
             <Grid>
@@ -51,11 +51,14 @@
                     <Image Name="imgError" Source="Resources/icon-not-ok.png" Width="32" Height="32" Margin="0,-1,10,-1" Visibility="Collapsed"></Image>
                     <TextBlock Name="tbUploadMessage" VerticalAlignment="Center" FontSize="18"></TextBlock>
                 </StackPanel>
+                <TextBlock Name="tbProgrammingInstructions" VerticalAlignment="Center">
+                    <Hyperlink Name="hyperlinkProgrammingInstructions" NavigateUri="http://e4bike.ru/page/infineon-programming">Programming instructions</Hyperlink>
+                </TextBlock>
             </Grid>
         </DockPanel>
 
         <Grid Margin="30,50,30,30">
-            
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="40"/>
@@ -65,7 +68,7 @@
             </Grid.ColumnDefinitions>
 
             <Grid Name="gridControls" Grid.ColumnSpan="3"/>
-            
+
             <WebBrowser Name="wb" Grid.Column="4"></WebBrowser>
         </Grid>
     </DockPanel>
