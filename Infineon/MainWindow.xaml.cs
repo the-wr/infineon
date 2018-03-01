@@ -84,7 +84,7 @@ namespace Infineon
             controllerDescs.Add( new ControllerDesc( "F18", "Infineon 4 (18-FET)",
                 data => new Inf4Controls( data ),
                 () => new InfData( InfDesc.Inf4_F18 ),
-                data => { ( data as InfData ).Desc = InfDesc.Inf4_F6; } ) );
+                data => { ( data as InfData ).Desc = InfDesc.Inf4_F18; } ) );
 
             Init();
         }
