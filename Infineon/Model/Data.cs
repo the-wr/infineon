@@ -83,9 +83,11 @@ namespace Infineon.Model
             }
         }
 
+        // Опытным путём выяснено что реальный ток контроллера превышает теоретический в 1.3 - 1.4 раза,
+        // поэтому введён поправочный к-т 1.35 на BatteryCurrentMultiplier
         public static InfDesc Inf4_F6 = new Inf4Desc()
         {
-            BatteryCurrentMultiplier = 1.0 / 5.10,
+            BatteryCurrentMultiplier = 1.0 / 5.10 * 1.35,
             PhaseCurrentMultiplier = 1.0 / 2.85,
             Type = "F6",
             FirmwareType = 1,
@@ -97,7 +99,7 @@ namespace Infineon.Model
 
         public static InfDesc Inf4_F12 = new Inf4Desc()
         {
-            BatteryCurrentMultiplier = 1.0 / 2.73,
+            BatteryCurrentMultiplier = 1.0 / 2.73 * 1.35,
             PhaseCurrentMultiplier = 1.0 / 1.20,
             Type = "F12",
             FirmwareType = 3,
@@ -111,7 +113,7 @@ namespace Infineon.Model
 
         public static InfDesc Inf4_F18 = new Inf4Desc()
         {
-            BatteryCurrentMultiplier = 1.0 / 1.70,
+            BatteryCurrentMultiplier = 1.0 / 1.70 * 1.35,
             PhaseCurrentMultiplier = 1.0 / 0.53,
             Type = "F18",
             FirmwareType = 5,
