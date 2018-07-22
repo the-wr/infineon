@@ -92,10 +92,10 @@ namespace Infineon.UI
             cbThrotteProtection.Setup( l.GetString( 29 ), data.ThrottleProtection, v => data.ThrottleProtection = v );
             cbHallsAngle.Setup( l.GetString( 30 ), data.HallsAngle, v => data.HallsAngle = v );
 
-            cbSoftStart.Setup( "Soft start enabled", data.SoftStartEnabled, v => data.SoftStartEnabled = v );
-            slSoftStartTime.Setup( "Soft start time (42)", 0, 10, 1, 0, 0, data.SoftStartTime, v => data.SoftStartTime = v );
-            slSlowSpeed.Setup( "Slow speed % (43)", 0, 80, data.Desc.SpeedMultiplier, 0, 0, data.SlowSpeed, v => data.SlowSpeed = v );
-            slRecoverSpeed.Setup( "Recover speed % (44)", 0, 128, data.Desc.RecoverSpeedMultiplier, 0, 0, data.RecoverSpeed, v => data.RecoverSpeed = v );
+            //cbSoftStart.Setup( "Soft start enabled", data.SoftStartEnabled, v => data.SoftStartEnabled = v );
+            slSoftStartTime.Setup( l.GetString( 39 ), 0, 10, 0.2, 0, 0, data.SoftStartTime, v => data.SoftStartTime = v );
+            //slSlowSpeed.Setup( "Slow speed % (43)", 0, 80, data.Desc.SpeedMultiplier, 0, 0, data.SlowSpeed, v => data.SlowSpeed = v );
+            //slRecoverSpeed.Setup( "Recover speed % (44)", 0, 128, data.Desc.RecoverSpeedMultiplier, 0, 0, data.RecoverSpeed, v => data.RecoverSpeed = v );
 
             BindHelpToControl( slBatteryCurrent, "BatteryCurrent" );
             BindHelpToControl( slPhaseCurrent, "PhaseCurrent" );
@@ -125,6 +125,8 @@ namespace Infineon.UI
             BindHelpToControl( cbOnePedalMode, "OnePedalMode" );
             BindHelpToControl( cbThrotteProtection, "ThrottleProtection" );
             BindHelpToControl( cbHallsAngle, "HallsAngle" );
+
+            BindHelpToControl( slSoftStartTime, "SoftStart" );
         }
 
         private void BindHelpToControl( FrameworkElement element, string helpKey )

@@ -37,3 +37,4 @@ Speed 3 current %
 Speed 4 current %
 Programming instructions
 ?lang=en
+Soft start
