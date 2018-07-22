@@ -135,9 +135,9 @@ namespace Infineon.Model
         {
             Type = "Inf3_F6",
             TypeByte = 1,
-            PhaseCurrentMultiplier = 1.0 / 1.25 / 2,
+            PhaseCurrentMultiplier = 1.0 / 1.25,
             PhaseCurrentOffset = -0.2,
-            BatteryCurrentMultiplier = 1.0 / 1.399 / 2,
+            BatteryCurrentMultiplier = 1.0 / 1.399,
             BatteryCurrentOffset = 0.15,
             BatteryCurrentLimit = 140,
             LVCMultiplier = 1.0 / 3.285 * 1.25,
@@ -150,10 +150,10 @@ namespace Infineon.Model
         {
             Type = "Inf3_F12",
             TypeByte = 3,
-            PhaseCurrentMultiplier = 1.0 / 0.624 / 2,
+            PhaseCurrentMultiplier = 1.0 / 0.624,
             PhaseCurrentOffset = -6,
             BatteryCurrentLimit = 140,
-            BatteryCurrentMultiplier = 1.0 / 0.7 / 2,
+            BatteryCurrentMultiplier = 1.0 / 0.7,
             BatteryCurrentOffset = 0.07,
             LVCMultiplier = 1.0 / 3.285 * 1.25,
             VoltageRangeLimitMin = 0,   // TODO
@@ -165,10 +165,10 @@ namespace Infineon.Model
         {
             Type = "Inf3_F18",
             // TypeByte = 7, // TODO!!!
-            PhaseCurrentMultiplier = 1.0 / 0.416 / 2,
+            PhaseCurrentMultiplier = 1.0 / 0.416,
             PhaseCurrentOffset = -11.9,
             BatteryCurrentLimit = 140,
-            BatteryCurrentMultiplier = 1.0 / 0.467 / 2,
+            BatteryCurrentMultiplier = 1.0 / 0.467,
             BatteryCurrentOffset = 0.03,
             LVCMultiplier = 1.0 / 3.285 * 1.25,
             VoltageRangeLimitMin = 0,   // TODO
