@@ -120,6 +120,20 @@ namespace Infineon.Model
             LVCMultiplier = 1.0 / 3.285 * 1.5,
             LVCMaxMultiplier = 0.4592,
             LVCMaxOffset = 2.8232,
+            VoltageRangeLimitMax = 255,
+            VoltageRangeLimitMin = 70,
+            MinVoltageRangeLimitMin = 77,
+        };
+
+        public static InfDesc Inf4_F24 = new Inf4Desc()
+        {
+            BatteryCurrentMultiplier = 1.0 / 1.70 * 1.35 * 2,
+            PhaseCurrentMultiplier = 1.0 / 0.53 * 2,
+            Type = "F24",
+            FirmwareType = 5,
+            LVCMultiplier = 1.0 / 3.285 * 1.5,
+            LVCMaxMultiplier = 0.4592,
+            LVCMaxOffset = 2.8232,
             VoltageRangeLimitMax = 212,
             VoltageRangeLimitMin = 70,
             MinVoltageRangeLimitMin = 77,
